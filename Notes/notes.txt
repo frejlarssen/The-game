@@ -1,0 +1,2 @@
+En tabell med användare. Där lagras vilka saker användaren äger.
+En tabell med platser. Där lagras vilka föremål som finns på platsen.
