@@ -1,17 +1,29 @@
 <?php
-    $servername = 'localhost';
-    $username = 'the_game_user';
-    $password = 'the_game_password';
-    $dbname = 'the_game';
+    if(array_key_exists('username', $_POST)){
+        $username = $_POST["username"];
+        $password = $_POST["password"];
 
-    $conn = new mysqli($servername, $username, $password, $dbname);
+        $servername = 'localhost';
+        $dbusername = 'the_game_user';
+        $dbpassword = 'the_game_password';
+        $dbname = 'the_game';
 
-    $sql_select = "SELECT * FROM tbl_places WHERE place_id = 1";
+        $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
-    $result_select = $conn->query($sql_select);
+        $sql_user = "SELECT * FROM tbl_users WHERE username = '$username'";
 
-    $row_select = $result_select->fetch_assoc();
+        $result_user = $conn->query($sql_user);
+
+        $row_user = $result_user->fetch_assoc();
+
+        if($password === $row_user["password"]){
+            setcookie("user_id", $row_user["user_id"]);
+            echo $_COOKIE["user_id"];
+            header("LOCATION: http://localhost/the-game/php/main.php");
+        }
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="sv">
 <head>
@@ -20,12 +32,29 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>The Game</title>
     <link type="text/css" rel="stylesheet" href="styles/style.css">
+    <link type="text/css" rel="stylesheet" href="styles/login.css">
 </head>
 <body>
-    <div id="container">
-        <p class="rub">Gläntan</p>
-        <img class="main-img" src="images/1.<?php echo $row_select["img_type"]; ?>">
-        <p class="description">Du vaknar upp i en glänta i skogen och vet inte var du är eller vem du är. Det är nog bäst att börja se sig om.</p>
+    <h1>The Game</h1>
+    <div class="form">
+        <h2>Logga in</h2>
+        <form action="index.php" method="post">
+            <h3>Användarnamn</h3>
+            <input name="username">
+            <h3>Lösenord</h3>
+            <input name="password"><br>
+            <input class="button" type="submit" value="Logga in">
+        </form>
+    </div>
+    <div class="form">
+        <h2>Ny spelare</h2>
+        <form>
+            <h3>Användarnamn</h3>
+            <input name="username">
+            <h3>Lösenord</h3>
+            <input name="password"><br>
+            <input class="button" type="submit" value="Registrera">
+        </form>
     </div>
 </body>
 </html>
