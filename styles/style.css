@@ -1,0 +1,21 @@
+body{
+    background-color: #193f0b;
+    margin: 0px;
+}
+#container{
+    width: 50%;
+    margin: auto;
+}
+.rub{
+    font-size: 50px;
+    margin: auto;
+}
+.main-img{
+    width: 100%;
+    border: 5px solid black;
+}
+.description{
+    font-size: 20px;
+    margin-top: 8px;
+    margin-bottom: 0px;
+}
