@@ -19,18 +19,18 @@
                 <input name="username">
                 <h3>Lösenord</h3>
                 <input name="password"><br>
-                <input class="button" type="submit" value="Logga in">
+                <input class="button" name="type" type="submit" value="Logga in">
             </form>
-            <div id="wrong-password">Fel lösenord</div>
+            <div id="wrong-password">Fel användarnamn eller lösenord</div>
         </div>
         <div class="form">
             <h2>Ny spelare</h2>
-            <form>
+            <form action="index.php" method="post">
                 <h3>Användarnamn</h3>
                 <input name="username">
                 <h3>Lösenord</h3>
                 <input name="password"><br>
-                <input class="button" type="submit" value="Registrera">
+                <input class="button" name="type" type="submit" value="Registrera">
             </form>
         </div>
     </div>
@@ -39,13 +39,13 @@
 </html>
 
 <?php
-    echo "<script>
-    document.getElementById('wrong-password').style.visibility = 'hidden';
-    </script>";
     if(array_key_exists("user_id", $_COOKIE)){
         header("LOCATION: http://localhost/the-game/php/main.php");
     }
-    if(array_key_exists('username', $_POST)){
+    echo "<script>
+    document.getElementById('wrong-password').style.visibility = 'hidden';
+    </script>";
+    if(array_key_exists("type", $_POST)){
         $username = $_POST["username"];
         $password = $_POST["password"];
 
@@ -56,20 +56,50 @@
 
         $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
-        $sql_user = "SELECT * FROM tbl_users WHERE username = '$username'";
+        if($_POST["type"] === "Logga in"){
+            $sql_user = "SELECT * FROM tbl_users WHERE username = '$username'";
 
-        $result_user = $conn->query($sql_user);
+            $result_user = $conn->query($sql_user);
 
-        $row_user = $result_user->fetch_assoc();
+            $row_user = $result_user->fetch_assoc();
 
-        if($password === $row_user["password"]){
-            setcookie("user_id", $row_user["user_id"]);
-            header("LOCATION: http://localhost/the-game/php/main.php");
+            if($password === $row_user["password"]){
+                setcookie("user_id", $row_user["user_id"]);
+                header("LOCATION: http://localhost/the-game/php/main.php");
+            }
+            else{
+                echo "<script>
+                document.getElementById('wrong-password').style.visibility = 'visible';
+                </script>";
+            }
         }
-        else{
-            echo "<script>
-            document.getElementById('wrong-password').style.visibility = 'visible';
-            </script>";
+        else if($_POST["type"] === "Registrera"){
+            if($username != "" && $password != ""){
+
+                $sql_search = "SELECT * from tbl_users where username = '$username'";
+                
+                $result_search = $conn->query($sql_search);
+                $row_search = $result_search -> fetch_assoc();
+
+                if($row_search === null){
+                    
+                    $sql_insert = "INSERT INTO tbl_users (username, password) VALUES ('$username', '$password')";
+                    echo $sql_insert . "<br>";
+
+                    if($conn->query($sql_insert)){
+                        header("LOCATION: http://localhost/the-game/php/main.php");
+                    }
+                    else{
+                        echo "Problem updating database: " . $conn->error;
+                    }
+                }
+                else{
+                    echo "username taken";
+                }
+            }
+            else{
+                echo "Du måste ange användarnamn och lösenord";
+            }
         }
     }
 ?>
