@@ -31,6 +31,9 @@
         <img class="main-img" src="../images/1.<?php echo $row_select["img_type"]; ?>">
         <p class="description">Du vaknar upp i en glänta i skogen och vet inte var du är eller vem du är. Det är nog bäst att börja se sig om.</p>
     </div>
+    <div id="logout" onclick="logout()">
+        Logga ut
+    </div>
+    <script src="../scripts/script.js"></script>
 </body>
 </html>
--->

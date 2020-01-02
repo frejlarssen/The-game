@@ -15,3 +15,14 @@
     margin-top: 8px;
     margin-bottom: 0px;
 }
+
+#logout{
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100px;
+    padding: 10px;
+    background-color: green;
+    text-align: center;
+    font-size: 20px;
+}
