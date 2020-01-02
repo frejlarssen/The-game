@@ -1,5 +1,5 @@
 <?php
-    //echo $_COOKIE["user_id"];
+    $user = $_COOKIE['user_id'];
 
     $servername = 'localhost';
     $username = 'the_game_user';
@@ -8,11 +8,15 @@
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    $sql_select = "SELECT * FROM tbl_places WHERE place_id = 1";
+    $sql_user = "SELECT * FROM tbl_users WHERE user_id = '$user'";
+    $result_user = $conn->query($sql_user);
+    $row_user = $result_user->fetch_assoc();
 
-    $result_select = $conn->query($sql_select);
-
-    $row_select = $result_select->fetch_assoc();
+    $place = $row_user['place'];
+    
+    $sql_place = "SELECT * FROM tbl_places WHERE place_id = $place";
+    $result_place = $conn->query($sql_place);
+    $row_place = $result_place->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -27,9 +31,9 @@
 </head>
 <body>
     <div id="container">
-        <p class="rub">Gläntan</p>
-        <img class="main-img" src="../images/1.<?php echo $row_select["img_type"]; ?>">
-        <p class="description">Du vaknar upp i en glänta i skogen och vet inte var du är eller vem du är. Det är nog bäst att börja se sig om.</p>
+        <p class="rub"><?php echo $row_place['name']?></p>
+        <img class="main-img" src="../images/<?php echo $row_place['place_id'] . '.' . $row_place['img_type'];?>">
+        <p class="description"><?php echo $row_place['description']?></p>
     </div>
     <div id="logout" onclick="logout()">
         Logga ut
