@@ -32,6 +32,7 @@
                 <input name="password"><br>
                 <input class="button" name="type" type="submit" value="Registrera">
             </form>
+            <div id="reg-message"></div>
         </div>
     </div>
     
@@ -94,11 +95,15 @@
                     }
                 }
                 else{
-                    echo "username taken";
+                    echo "<script>
+                    document.getElementById('reg-message').innerHTML = 'Användarnamnet är upptaget'
+                    </script>";
                 }
             }
             else{
-                echo "Du måste ange användarnamn och lösenord";
+                echo "<script>
+                document.getElementById('reg-message').innerHTML = 'Du måste ange användarnamn och lösenord'
+                </script>";
             }
         }
     }
