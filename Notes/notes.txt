@@ -3,3 +3,5 @@ En tabell med platser. Där lagras vilka föremål som finns på platsen.
 
 En tabell där varje post är en y-koordinat och varje kolumn är en x-koordinat.
 Där lagras vilken miljö som finns på de olika platserna. Tabellen med platser döps om från tbl_places till tbl_surroundings.
+
+En tabell för karaktärer.

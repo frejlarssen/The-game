@@ -18,7 +18,7 @@
                 <h3>Användarnamn</h3>
                 <input name="username">
                 <h3>Lösenord</h3>
-                <input name="password"><br>
+                <input name="password" type="password"><br>
                 <input class="button" name="type" type="submit" value="Logga in">
             </form>
             <div id="wrong-password">Fel användarnamn eller lösenord</div>
@@ -29,7 +29,7 @@
                 <h3>Användarnamn</h3>
                 <input name="username">
                 <h3>Lösenord</h3>
-                <input name="password"><br>
+                <input name="password" type="password"><br>
                 <input class="button" name="type" type="submit" value="Registrera">
             </form>
             <div id="reg-message"></div>
@@ -88,11 +88,20 @@
                     echo $sql_insert . "<br>";
 
                     if($conn->query($sql_insert)){
-                        header("LOCATION: http://localhost/the-game/php/main.php");
+                        echo "database updated successfully: " . $conn->error;
                     }
                     else{
                         echo "Problem updating database: " . $conn->error;
                     }
+
+                    $sql_user = "SELECT * FROM tbl_users WHERE username = '$username'";
+
+                    $result_user = $conn->query($sql_user);
+
+                    $row_user = $result_user->fetch_assoc();
+
+                    setcookie("user_id", $row_user["user_id"]);
+                    header("LOCATION: http://localhost/the-game/php/main.php");
                 }
                 else{
                     echo "<script>
