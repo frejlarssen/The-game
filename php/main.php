@@ -24,6 +24,13 @@
     $sql_place = "SELECT * FROM tbl_surroundings WHERE place_id = '$place'";
     $result_place = $conn->query($sql_place);
     $row_place = $result_place->fetch_assoc();
+
+    $sql_character = "SELECT * FROM tbl_characters WHERE x_coordinate = '$x_coordinate' and y_coordinate = '$y_coordinate'";
+    $result_character = $conn->query($sql_character);
+    $row_character = $result_character->fetch_assoc();
+
+    $character = $row_character['character_id'];
+    echo $character;
 ?>
 
 <!DOCTYPE html>

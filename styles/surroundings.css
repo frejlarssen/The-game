@@ -46,4 +46,8 @@
 .direction{
     width: 100px;
     height: 100px;
+    cursor: crosshair;
+}
+#middle{
+    cursor: default;
 }
