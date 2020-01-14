@@ -5,3 +5,7 @@ En tabell där varje post är en y-koordinat och varje kolumn är en x-koordinat
 Där lagras vilken miljö som finns på de olika platserna. Tabellen med platser döps om från tbl_places till tbl_surroundings.
 
 En tabell för karaktärer.
+
+Yoga har en hållhake på spelaren.
+Yoga har blivit bestulen på en egenskap av trögkryparen Luficer.
+Spelaren måste föra tillbaka egenskapen till den rättmätiga ägaren.
