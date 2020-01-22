@@ -19,18 +19,20 @@
     $result_map = $conn->query($sql_map);
     $row_map = $result_map->fetch_assoc();
 
-    $place = $row_map[$x_coordinate];
+    $surrounding_id = $row_map[$x_coordinate];
 
-    $sql_place = "SELECT * FROM tbl_surroundings WHERE place_id = '$place'";
-    $result_place = $conn->query($sql_place);
-    $row_place = $result_place->fetch_assoc();
+    $sql_surrounding = "SELECT * FROM tbl_surroundings WHERE surrounding_id = '$surrounding_id'";
+    $result_surrounding = $conn->query($sql_surrounding);
+    $row_surrounding = $result_surrounding->fetch_assoc();
 
     $sql_character = "SELECT * FROM tbl_characters WHERE x_coordinate = '$x_coordinate' and y_coordinate = '$y_coordinate'";
     $result_character = $conn->query($sql_character);
     $row_character = $result_character->fetch_assoc();
 
-    $character = $row_character['character_id'];
-    echo $character;
+    $main_img_type = $row_surrounding['img_type'];
+
+    $character_id = $row_character['character_id'];
+    $character_img_type = $row_character['img_type'];
 ?>
 
 <!DOCTYPE html>
@@ -45,9 +47,11 @@
 </head>
 <body>
     <div id="container">
-        <p class="rub"><?php echo $row_place['name']?></p>
-        <img class="main-img" src="../images/surroundings/<?php echo $row_place['place_id'] . '.' . $row_place['img_type'];?>">
-        <p class="description"><?php echo $row_place['description']?></p>
+        <p class="rub"><?php echo $row_surrounding['name']?></p>
+        <div id="image-container">
+            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>">
+        </div>
+        <p class="description"><?php echo $row_surrounding['description']?></p>
     </div>
     <div id="logout" onclick="logout()">
         Logga ut
@@ -68,3 +72,7 @@
     <script src="../scripts/script.js"></script>
 </body>
 </html>
+
+<?php
+    echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
+?>
