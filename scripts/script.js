@@ -15,3 +15,7 @@ function move(direction) {
     console.log(direction);
     window.location.href = "move.php/?direction=" + direction;
 }
+
+function viewLine() {
+    console.log("in function");
+}

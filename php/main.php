@@ -49,7 +49,7 @@
     <div id="container">
         <p class="rub"><?php echo $row_surrounding['name']?></p>
         <div id="image-container">
-            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>">
+            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>" onclick="viewLine()">
         </div>
         <p class="description"><?php echo $row_surrounding['description']?></p>
     </div>
