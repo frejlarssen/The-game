@@ -35,7 +35,7 @@
             <div id="reg-message"></div>
         </div>
     </div>
-    
+
 </body>
 </html>
 
@@ -78,12 +78,12 @@
             if($username != "" && $password != ""){
 
                 $sql_search = "SELECT * from tbl_users where username = '$username'";
-                
+
                 $result_search = $conn->query($sql_search);
                 $row_search = $result_search -> fetch_assoc();
 
                 if($row_search === null){
-                    
+
                     $sql_insert = "INSERT INTO tbl_users (username, password) VALUES ('$username', '$password')";
                     echo $sql_insert . "<br>";
 
@@ -101,13 +101,13 @@
                     $row_user = $result_user->fetch_assoc();
 
                     $user_id = $row_user['user_id'];
-                    
+
                     for($x = 1; $x <= 11; $x++){
-                        
+
                         for($y = 1; $y <= 11; $y++){
-                            
+
                             $sql_users_places = "INSERT INTO tbl_users_places (user_id, x_coordinate, y_coordinate) VALUES ($user_id, $x, $y)";
-                            
+
                             if($conn->query($sql_users_places)){
                                 echo "tbl_users_places inserted successfully";
                             }
