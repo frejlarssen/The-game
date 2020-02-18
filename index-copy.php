@@ -89,6 +89,7 @@
 
                     if($conn->query($sql_insert)){
                         echo "database updated successfully<br>";
+                        echo "hej";
                     }
                     else{
                         echo "Problem updating database: " . $conn->error . "<br>";
@@ -101,10 +102,12 @@
                     $row_user = $result_user->fetch_assoc();
 
                     $user_id = $row_user['user_id'];
+
+                    //echo "user_id: $user_id <br>";
                     
                     for($x = 1; $x <= 11; $x++){
                         
-                        for($y = 1; $y <= 11; $y++){
+                        for($y = 1; $y <= 11; $y++){ //fungerar om man sänker 11 till 4
                             
                             $sql_users_places = "INSERT INTO tbl_users_places (user_id, x_coordinate, y_coordinate) VALUES ($user_id, $x, $y)";
                             
@@ -112,15 +115,13 @@
                                 echo "tbl_users_places inserted successfully";
                             }
                             else{
-                                echo "Problem inserting tbl_users_places: " . $conn->error . "<br>";
+                                //echo "Problem inserting tbl_users_places: " . $conn->error . "<br>";
                             }
                         }
                     }
 
-                    echo "<script>
-                    document.cookie = 'user_id=$user_id';
-                    window.location.replace('http://localhost/the-game/php/main.php');
-                    </script>";
+                    setcookie("user_id", $user_id);
+                    header("LOCATION: http://localhost/the-game/php/main.php");
                 }
                 else{
                     echo "<script>
