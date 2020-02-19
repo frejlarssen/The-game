@@ -40,13 +40,13 @@
 </html>
 
 <?php
-    if(array_key_exists("user_id", $_COOKIE)){
+    if (array_key_exists("user_id", $_COOKIE)) {
         header("LOCATION: http://localhost/the-game/php/main.php");
     }
     echo "<script>
     document.getElementById('wrong-password').style.visibility = 'hidden';
     </script>";
-    if(array_key_exists("type", $_POST)){
+    if (array_key_exists("type", $_POST)) {
         $username = $_POST["username"];
         $password = $_POST["password"];
 
@@ -57,40 +57,40 @@
 
         $conn = new mysqli($servername, $dbusername, $dbpassword, $dbname);
 
-        if($_POST["type"] === "Logga in"){
+        if ($_POST["type"] === "Logga in") {
             $sql_user = "SELECT * FROM tbl_users WHERE username = '$username'";
 
             $result_user = $conn->query($sql_user);
 
             $row_user = $result_user->fetch_assoc();
 
-            if($password === $row_user["password"]){
-                setcookie("user_id", $row_user["user_id"]);
-                header("LOCATION: http://localhost/the-game/php/main.php");
-            }
-            else{
+            if ($row_user == null || $password !== $row_user["password"]) {
                 echo "<script>
                 document.getElementById('wrong-password').style.visibility = 'visible';
                 </script>";
             }
+            else {
+                setcookie("user_id", $row_user["user_id"]);
+                header("LOCATION: http://localhost/the-game/php/main.php");
+            }
         }
-        else if($_POST["type"] === "Registrera"){
-            if($username != "" && $password != ""){
+        else if ($_POST["type"] === "Registrera") {
+            if ($username != "" && $password != "") {
 
                 $sql_search = "SELECT * from tbl_users where username = '$username'";
 
                 $result_search = $conn->query($sql_search);
                 $row_search = $result_search -> fetch_assoc();
 
-                if($row_search === null){
+                if ($row_search === null) {
 
                     $sql_insert = "INSERT INTO tbl_users (username, password) VALUES ('$username', '$password')";
                     echo $sql_insert . "<br>";
 
-                    if($conn->query($sql_insert)){
+                    if ($conn->query($sql_insert)) {
                         echo "database updated successfully<br>";
                     }
-                    else{
+                    else {
                         echo "Problem updating database: " . $conn->error . "<br>";
                     }
 
@@ -102,16 +102,16 @@
 
                     $user_id = $row_user['user_id'];
 
-                    for($x = 1; $x <= 11; $x++){
+                    for ($x = 1; $x <= 11; $x++) {
 
-                        for($y = 1; $y <= 11; $y++){
+                        for ($y = 1; $y <= 11; $y++) {
 
                             $sql_users_places = "INSERT INTO tbl_users_places (user_id, x_coordinate, y_coordinate) VALUES ($user_id, $x, $y)";
 
-                            if($conn->query($sql_users_places)){
+                            if ($conn->query($sql_users_places)) {
                                 echo "tbl_users_places inserted successfully";
                             }
-                            else{
+                            else {
                                 echo "Problem inserting tbl_users_places: " . $conn->error . "<br>";
                             }
                         }
@@ -122,13 +122,13 @@
                     window.location.replace('http://localhost/the-game/php/main.php');
                     </script>";
                 }
-                else{
+                else {
                     echo "<script>
                     document.getElementById('reg-message').innerHTML = 'Användarnamnet är upptaget'
                     </script>";
                 }
             }
-            else{
+            else {
                 echo "<script>
                 document.getElementById('reg-message').innerHTML = 'Du måste ange användarnamn och lösenord'
                 </script>";
