@@ -70,8 +70,11 @@
                 </script>";
             }
             else {
-                setcookie("user_id", $row_user["user_id"]);
-                header("LOCATION: http://localhost/the-game/php/main.php");
+                $user_id = $row_user['user_id'];
+                echo "<script>
+                    document.cookie = 'user_id=$user_id';
+                    window.location.replace('http://localhost/the-game/php/main.php');
+                    </script>";
             }
         }
         else if ($_POST["type"] === "Registrera") {
