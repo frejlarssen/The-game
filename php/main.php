@@ -49,7 +49,10 @@
     <div id="container">
         <p class="rub"><?php echo $row_surrounding['name']?></p>
         <div id="image-container">
-            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>" onclick="viewLine()">
+            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>" onclick="viewLine(1)">
+            <div id="chat-box">
+                Hölasjgöfkljsdöf klgjsöfklgjölsdfjgkl<br><br><br><br><br><br><br><br><br>klgjsöfklgjölsdfjgkl
+            </div>
         </div>
         <p class="description"><?php echo $row_surrounding['description']?></p>
     </div>

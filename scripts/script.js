@@ -1,8 +1,6 @@
 
-function viewMainImage(surrounding_id, imgType) {
-    console.log(surrounding_id);
-    console.log(imgType);
-    url = "../images/surroundings/" + surrounding_id + "." + imgType;
+function viewMainImage(surroundingId, imgType) {
+    url = "../images/surroundings/" + surroundingId + "." + imgType;
     document.getElementById("image-container").style.backgroundImage = `url(${url})`;
 }
 
@@ -16,6 +14,6 @@ function move(direction) {
     window.location.href = "move.php/?direction=" + direction;
 }
 
-function viewLine() {
-    console.log("in function");
+function viewLine(line_number) {
+
 }
