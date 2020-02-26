@@ -55,10 +55,8 @@
     <div id="container">
         <p class="rub"><?php echo $row_surrounding['name']?></p>
         <div id="image-container">
-            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>" onclick="viewLine(1)">
-            <div id="chat-box">
-                Hölasjgöfkljsdöf klgjsöfklgjölsdfjgkl
-            </div>
+            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>">
+            <div id="chat-box"></div>
         </div>
         <p class="description"><?php echo $row_surrounding['description']?></p>
     </div>
@@ -86,13 +84,10 @@
     echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
     
     if ($visited == 0) {
-        echo "<script>
-            document.getElementById('chat-box').style.visibility = 'visible';
-            </script>";
-        
         $row_line = $row_character['line_1'];
 
         echo "<script>
+            document.getElementById('chat-box').style.visibility = 'visible';
             document.getElementById('chat-box').innerHTML = '$row_line';
             </script>";
     }

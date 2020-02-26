@@ -10,10 +10,5 @@ function logout() {
 }
 
 function move(direction) {
-    console.log(direction);
     window.location.href = "move.php/?direction=" + direction;
-}
-
-function viewLine(line_number) {
-
 }

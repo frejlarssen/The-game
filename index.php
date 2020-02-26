@@ -7,7 +7,6 @@
     <title>The Game</title>
     <link type="text/css" rel="stylesheet" href="styles/style.css">
     <link type="text/css" rel="stylesheet" href="styles/login.css">
-    <script></script>
 </head>
 <body>
     <div id="container">
