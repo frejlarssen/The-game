@@ -27,6 +27,8 @@
     padding: 30px;
     padding-bottom: 75px;
     visibility: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(66, 62, 62);
 }
 .description{
     font-size: 20px;
