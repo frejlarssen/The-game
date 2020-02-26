@@ -33,6 +33,12 @@
 
     $character_id = $row_character['character_id'];
     $character_img_type = $row_character['img_type'];
+    
+    $sql_visited = "SELECT * FROM tbl_users_places WHERE x_coordinate = '$x_coordinate' and y_coordinate = '$y_coordinate'";
+    $result_visited = $conn->query($sql_visited);
+    $row_visited = $result_visited->fetch_assoc();
+
+    $visited = $row_visited['visited'];
 ?>
 
 <!DOCTYPE html>
@@ -51,7 +57,7 @@
         <div id="image-container">
             <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>" onclick="viewLine(1)">
             <div id="chat-box">
-                Hölasjgöfkljsdöf klgjsöfklgjölsdfjgkl<br><br><br><br><br><br><br><br><br>klgjsöfklgjölsdfjgkl
+                Hölasjgöfkljsdöf klgjsöfklgjölsdfjgkl
             </div>
         </div>
         <p class="description"><?php echo $row_surrounding['description']?></p>
@@ -78,4 +84,16 @@
 
 <?php
     echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
+    
+    if ($visited == 0) {
+        echo "<script>
+            document.getElementById('chat-box').style.visibility = 'visible';
+            </script>";
+        
+        $row_line = $row_character['line_1'];
+
+        echo "<script>
+            document.getElementById('chat-box').innerHTML = '$row_line';
+            </script>";
+    }
 ?>
