@@ -8,37 +8,33 @@
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    $sql_user = "SELECT * FROM tbl_users WHERE user_id = '$user'";
+    $sql_user = "SELECT * 
+                    FROM (((tbl_users
+                        LEFT JOIN tbl_map
+                            ON tbl_users.y_coordinate = tbl_map.y_coordinate)
+                        LEFT JOIN tbl_characters
+                            ON tbl_users.x_coordinate = tbl_characters.x_coordinate && tbl_users.y_coordinate = tbl_characters.y_coordinate)
+                        LEFT JOIN tbl_users_places
+                            ON tbl_users.x_coordinate = tbl_users_places.x_coordinate && tbl_users.y_coordinate = tbl_users_places.y_coordinate)
+                    WHERE tbl_users.`user_id` = $user
+                ;";
+
     $result_user = $conn->query($sql_user);
     $row_user = $result_user->fetch_assoc();
 
     $x_coordinate = $row_user['x_coordinate'];
-    $y_coordinate = $row_user['y_coordinate'];
 
-    $sql_map = "SELECT * FROM tbl_map WHERE y_coordinate = '$y_coordinate'";
-    $result_map = $conn->query($sql_map);
-    $row_map = $result_map->fetch_assoc();
-
-    $surrounding_id = $row_map[$x_coordinate];
+    $surrounding_id = $row_user[$x_coordinate];
 
     $sql_surrounding = "SELECT * FROM tbl_surroundings WHERE surrounding_id = '$surrounding_id'";
     $result_surrounding = $conn->query($sql_surrounding);
     $row_surrounding = $result_surrounding->fetch_assoc();
 
-    $sql_character = "SELECT * FROM tbl_characters WHERE x_coordinate = '$x_coordinate' and y_coordinate = '$y_coordinate'";
-    $result_character = $conn->query($sql_character);
-    $row_character = $result_character->fetch_assoc();
-
     $main_img_type = $row_surrounding['img_type'];
 
-    $character_id = $row_character['character_id'];
-    $character_img_type = $row_character['img_type'];
-    
-    $sql_visited = "SELECT * FROM tbl_users_places WHERE x_coordinate = '$x_coordinate' and y_coordinate = '$y_coordinate'";
-    $result_visited = $conn->query($sql_visited);
-    $row_visited = $result_visited->fetch_assoc();
-
-    $visited = $row_visited['visited'];
+    $character_id = $row_user['character_id'];
+    $character_img_type = $row_user['img_type'];
+    $visited = $row_user['visited'];
 ?>
 
 <!DOCTYPE html>
@@ -84,7 +80,7 @@
     echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
     
     if ($visited == 0) {
-        $row_line = $row_character['line_1'];
+        $row_line = $row_user['line_1'];
 
         echo "<script>
             document.getElementById('chat-box').style.visibility = 'visible';
