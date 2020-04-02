@@ -9,6 +9,7 @@
     <link type="text/css" rel="stylesheet" href="styles/login.css">
 </head>
 <body>
+<div></div>
     <div id="container">
         <h1>The Game</h1>
         <div class="form">
