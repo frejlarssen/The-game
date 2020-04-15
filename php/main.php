@@ -80,7 +80,7 @@
     echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
     
     if ($visited == 0) {
-        $row_line = $row_user['line_1'];
+        $row_line = $row_user['line_0'];
 
         echo "<script>
             document.getElementById('chat-box').style.visibility = 'visible';
