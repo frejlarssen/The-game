@@ -10,8 +10,6 @@
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    
-
     switch($direction){
         case 'north':
             $sql_update = "UPDATE tbl_users SET y_coordinate = y_coordinate - 1 WHERE user_id = $user";
@@ -32,6 +30,6 @@
     } else {
         echo 'Error changing posts: ' . $conn->error . "<br>";
     }
-    
+
     header("LOCATION: http://localhost/the-game/php/main.php");
 ?>
