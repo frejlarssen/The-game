@@ -24,8 +24,10 @@
     position: absolute;
     top: 100px;
     left: 700px;
-    padding: 30px;
-    padding-bottom: 75px;
+    padding-top: 30px;
+    padding-bottom: 55px;
+    padding-left: 60px;
+    padding-right: 60px;
     visibility: hidden;
     font-family: 'Courier New', Courier, monospace;
     color: rgb(66, 62, 62);
