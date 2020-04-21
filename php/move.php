@@ -10,9 +10,9 @@
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    switch($direction){
+    switch($direction) {
         case 'north':
-            $sql_update = "UPDATE tbl_users SET y_coordinate = y_coordinate - 1 WHERE user_id = $user";
+            $sql_update = "UPDATE tbl_users SET y_coordinate = y_coordinate + 1 WHERE user_id = $user";
         break;
         case 'west':
             $sql_update = "UPDATE tbl_users SET x_coordinate = x_coordinate - 1 WHERE user_id = $user";
@@ -21,7 +21,7 @@
             $sql_update = "UPDATE tbl_users SET x_coordinate = x_coordinate + 1 WHERE user_id = $user";
         break;
         case 'south':
-            $sql_update = "UPDATE tbl_users SET y_coordinate = y_coordinate + 1 WHERE user_id = $user";
+            $sql_update = "UPDATE tbl_users SET y_coordinate = y_coordinate - 1 WHERE user_id = $user";
         break;
     }
 

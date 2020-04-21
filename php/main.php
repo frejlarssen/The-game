@@ -10,30 +10,38 @@
 
     $sql_user = "SELECT * 
                     FROM (((tbl_users
-                        LEFT JOIN tbl_map
-                            ON tbl_users.y_coordinate = tbl_map.y_coordinate)
-                        LEFT JOIN tbl_characters
-                            ON tbl_users.x_coordinate = tbl_characters.x_coordinate && tbl_users.y_coordinate = tbl_characters.y_coordinate)
+                        LEFT JOIN tbl_positions
+                            ON tbl_users.x_coordinate = tbl_positions.x_coordinate && tbl_users.y_coordinate = tbl_positions.y_coordinate)
+                        LEFT JOIN tbl_surroundings
+                            ON tbl_positions.surrounding_id = tbl_surroundings.surrounding_id)
                         LEFT JOIN tbl_users_places
                             ON tbl_users.x_coordinate = tbl_users_places.x_coordinate && tbl_users.y_coordinate = tbl_users_places.y_coordinate)
                     WHERE tbl_users.`user_id` = $user
                 ;";
 
-    $result_user = $conn->query($sql_user);
-    $row_user = $result_user->fetch_assoc();
+    if ($result_user = $conn->query($sql_user)) {
+        $row_user = $result_user->fetch_assoc();
+    }
+    else {
+        echo $conn->error;
+    }
 
+    $surrounding_id = $row_user['surrounding_id'];
     $x_coordinate = $row_user['x_coordinate'];
+    $y_coordinate = $row_user['y_coordinate'];
 
-    $surrounding_id = $row_user[$x_coordinate];
+    $sql_character = "SELECT * FROM tbl_characters WHERE x_coordinate = $x_coordinate && y_coordinate = $y_coordinate";
+    $result_character = $conn->query($sql_character);
+    $row_character = $result_character->fetch_assoc();
 
-    $sql_surrounding = "SELECT * FROM tbl_surroundings WHERE surrounding_id = '$surrounding_id'";
-    $result_surrounding = $conn->query($sql_surrounding);
-    $row_surrounding = $result_surrounding->fetch_assoc();
+    $header = $row_user['name'];
+    $description = $row_user['description'];
+    $main_img_type = $row_user['img_type'];
 
-    $main_img_type = $row_surrounding['img_type'];
+    $character_id = $row_character['character_id'];
+    $character_img_type = $row_character['img_type'];
+    $line0 = $row_character['line_0'];
 
-    $character_id = $row_user['character_id'];
-    $character_img_type = $row_user['img_type'];
     $visited = $row_user['visited'];
 ?>
 
@@ -49,12 +57,12 @@
 </head>
 <body>
     <div id="container">
-        <p class="rub"><?php echo $row_surrounding['name']?></p>
+        <p class="rub"><?php echo $header?></p>
         <div id="image-container">
             <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>">
             <div id="chat-box"></div>
         </div>
-        <p class="description"><?php echo $row_surrounding['description']?></p>
+        <p class="description"><?php echo $description?></p>
     </div>
     <div id="logout" onclick="logout()">
         Logga ut
@@ -80,11 +88,9 @@
     echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
     
     if ($visited == 0) {
-        $row_line = $row_user['line_0'];
-
         echo "<script>
             document.getElementById('chat-box').style.visibility = 'visible';
-            document.getElementById('chat-box').innerHTML = '$row_line';
+            document.getElementById('chat-box').innerHTML = '$line0';
             </script>";
     }
 ?>
