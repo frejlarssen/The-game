@@ -38,6 +38,9 @@
     $description = $row_user['description'];
     $main_img_type = $row_user['img_type'];
 
+    $choice1 = $row_user['choice_1'];
+    $choice2 = $row_user['choice_2'];
+
     $character_id = $row_character['character_id'];
     $character_img_type = $row_character['img_type'];
     $line0 = $row_character['line_0'];
@@ -62,9 +65,17 @@
             <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>">
             <div id="chat-box"></div>
         </div>
+        <div id="button-container">
+            <div class="button choice">
+                <?php echo $choice1?>
+            </div>
+            <div class="button choice">
+                <?php echo $choice2?>
+            </div>
+        </div>
         <p class="description"><?php echo $description?></p>
     </div>
-    <div id="logout" onclick="logout()">
+    <div id="logout" class="button" onclick="logout()">
         Logga ut
     </div>
     <div id="navigation">
