@@ -13,9 +13,9 @@
     background-repeat: no-repeat;
 }
 #character-img{
-    width: 35%;
+    width: 30%;
     margin-top: 135px;
-    margin-left: 150px;
+    margin-left: 130px;
 }
 #chat-box{
     background-image: url("../images/chat_box.png");
