@@ -41,9 +41,11 @@
     $choice1 = $row_user['choice_1'];
     $choice2 = $row_user['choice_2'];
 
-    $character_id = $row_character['character_id'];
-    $character_img_type = $row_character['img_type'];
-    $lines = array($row_character['line_0'], $row_character['line_1'], $row_character['line_2']);
+    if ($row_character != null) {
+        $character_id = $row_character['character_id'];
+        $character_img_type = $row_character['img_type'];
+        $lines = array($row_character['line_0'], $row_character['line_1'], $row_character['line_2']);
+    }
 
     $visited = $row_user['visited'];
 ?>
@@ -94,6 +96,7 @@
     <script src="../scripts/script.js"></script>
     <script>
         function showLine(line) {
+            viewChatBox();
             switch (line) {
                 case 0:
                     document.getElementById("chat-box").innerHTML = "<?php echo $lines[0]?>";
@@ -103,6 +106,7 @@
                     break;
                 case 2:
                     document.getElementById("chat-box").innerHTML = "<?php echo $lines[2]?>";
+                    break;
             }
         }
     </script>

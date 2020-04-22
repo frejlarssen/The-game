@@ -4,6 +4,11 @@ function viewMainImage(surroundingId, imgType) {
     document.getElementById("image-container").style.backgroundImage = `url(${url})`;
 }
 
+function viewChatBox() {
+    url = "../images/chat_box.png";
+    document.getElementById("chat-box").style.backgroundImage = `url(${url})`;
+}
+
 function logout() {
     document.cookie = "user_id=; expires=Thu, 18 Dec 2013 12:00:00; path=/the-game";
     window.location.href = "../";
