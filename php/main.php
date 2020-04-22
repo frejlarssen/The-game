@@ -43,7 +43,7 @@
 
     $character_id = $row_character['character_id'];
     $character_img_type = $row_character['img_type'];
-    $line0 = $row_character['line_0'];
+    $lines = array($row_character['line_0'], $row_character['line_1'], $row_character['line_2']);
 
     $visited = $row_user['visited'];
 ?>
@@ -66,10 +66,10 @@
             <div id="chat-box"></div>
         </div>
         <div id="button-container">
-            <div class="button choice">
+            <div id="choice1" class="button choice" onclick="showLine(1)">
                 <?php echo $choice1?>
             </div>
-            <div class="button choice">
+            <div id="choice2" class="button choice" onclick="showLine(2)">
                 <?php echo $choice2?>
             </div>
         </div>
@@ -92,16 +92,30 @@
         </div>
     </div>
     <script src="../scripts/script.js"></script>
+    <script>
+        function showLine(line) {
+            switch (line) {
+                case 0:
+                    document.getElementById("chat-box").innerHTML = "<?php echo $lines[0]?>";
+                    break;
+                case 1:
+                    document.getElementById("chat-box").innerHTML = "<?php echo $lines[1]?>";
+                    break;
+                case 2:
+                    document.getElementById("chat-box").innerHTML = "<?php echo $lines[2]?>";
+            }
+        }
+    </script>
 </body>
 </html>
 
 <?php
     echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
-    
+
     if ($visited == 0) {
         echo "<script>
             document.getElementById('chat-box').style.visibility = 'visible';
-            document.getElementById('chat-box').innerHTML = '$line0';
+            showLine(0);
             </script>";
     }
 ?>
