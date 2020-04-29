@@ -86,11 +86,10 @@
 
                 if ($row_search === null) {
 
-                    $sql_insert = "INSERT INTO tbl_users (username, password) VALUES ('$username', '$password')";
-                    echo $sql_insert . "<br>";
+                    $sql_insert = "INSERT INTO tbl_users (username, password, position_id) VALUES ('$username', '$password', 85)";
 
                     if ($conn->query($sql_insert)) {
-                        echo "database updated successfully<br>";
+                        echo "Database updated successfully<br>";
                     }
                     else {
                         echo "Problem updating database: " . $conn->error . "<br>";
@@ -104,18 +103,14 @@
 
                     $user_id = $row_user['user_id'];
 
-                    for ($x = 1; $x <= 11; $x++) {
+                    for ($position_id = 1; $position_id <= 169; $position_id++) {
+                        $sql_users_positions = "INSERT INTO tbl_users_positions (user_id, position_id) VALUES ($user_id, $position_id)";
 
-                        for ($y = 1; $y <= 11; $y++) {
-
-                            $sql_users_places = "INSERT INTO tbl_users_places (user_id, x_coordinate, y_coordinate) VALUES ($user_id, $x, $y)";
-
-                            if ($conn->query($sql_users_places)) {
-                                echo "tbl_users_places inserted successfully";
-                            }
-                            else {
-                                echo "Problem inserting tbl_users_places: " . $conn->error . "<br>";
-                            }
+                        if ($conn->query($sql_users_positions)) {
+                            echo "tbl_users_positions inserted successfully";
+                        }
+                        else {
+                            echo "Problem inserting tbl_users_positions: " . $conn->error . "<br>";
                         }
                     }
 

@@ -11,11 +11,11 @@
     $sql_user = "SELECT * 
                     FROM (((tbl_users
                         LEFT JOIN tbl_positions
-                            ON tbl_users.x_coordinate = tbl_positions.x_coordinate && tbl_users.y_coordinate = tbl_positions.y_coordinate)
+                            ON tbl_users.position_id = tbl_positions.position_id)
                         LEFT JOIN tbl_surroundings
                             ON tbl_positions.surrounding_id = tbl_surroundings.surrounding_id)
-                        LEFT JOIN tbl_users_places
-                            ON tbl_users.x_coordinate = tbl_users_places.x_coordinate && tbl_users.y_coordinate = tbl_users_places.y_coordinate)
+                        LEFT JOIN tbl_users_positions
+                            ON tbl_users.position_id = tbl_users_positions.position_id && tbl_users.user_id = tbl_users_positions.user_id)
                     WHERE tbl_users.`user_id` = $user
                 ;";
 
@@ -26,11 +26,10 @@
         echo $conn->error;
     }
 
+    $position_id = $row_user['position_id'];
     $surrounding_id = $row_user['surrounding_id'];
-    $x_coordinate = $row_user['x_coordinate'];
-    $y_coordinate = $row_user['y_coordinate'];
 
-    $sql_character = "SELECT * FROM tbl_characters WHERE x_coordinate = $x_coordinate && y_coordinate = $y_coordinate";
+    $sql_character = "SELECT * FROM tbl_characters WHERE position_id = $position_id";
     $result_character = $conn->query($sql_character);
     $row_character = $result_character->fetch_assoc();
 
@@ -68,10 +67,10 @@
             <div id="chat-box"></div>
         </div>
         <div id="button-container">
-            <div id="choice1" class="button choice" onclick="showLine(1)">
+            <div id="choice1" class="button choice" onclick="buttonClicked(1)">
                 <?php echo $choice1?>
             </div>
-            <div id="choice2" class="button choice" onclick="showLine(2)">
+            <div id="choice2" class="button choice" onclick="buttonClicked(2)">
                 <?php echo $choice2?>
             </div>
         </div>
@@ -95,6 +94,11 @@
     </div>
     <script src="../scripts/script.js"></script>
     <script>
+        function buttonClicked(choice) {
+            showLine(choice);
+            setVisited(<?php echo $position_id ?>);
+        }
+
         function showLine(line) {
             viewChatBox();
             switch (line) {

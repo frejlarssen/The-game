@@ -10,20 +10,40 @@
 
     $conn = new mysqli($servername, $username, $password, $dbname);
 
+    $sql_user = "SELECT * FROM ( tbl_users 
+                    LEFT JOIN tbl_positions
+                        ON tbl_users.position_id = tbl_positions.position_id)
+                    WHERE user_id = $user
+                ;";
+
+    $result_user = $conn->query($sql_user);
+    $row_user = $result_user->fetch_assoc();
+
+    $x_coordinate = $row_user['x_coordinate'];
+    $y_coordinate = $row_user['y_coordinate'];
+
     switch($direction) {
         case 'north':
-            $sql_update = "UPDATE tbl_users SET y_coordinate = y_coordinate + 1 WHERE user_id = $user";
+            $y_coordinate ++;
         break;
         case 'west':
-            $sql_update = "UPDATE tbl_users SET x_coordinate = x_coordinate - 1 WHERE user_id = $user";
+            $x_coordinate --;
         break;
         case 'east':
-            $sql_update = "UPDATE tbl_users SET x_coordinate = x_coordinate + 1 WHERE user_id = $user";
+            $x_coordinate ++;
         break;
         case 'south':
-            $sql_update = "UPDATE tbl_users SET y_coordinate = y_coordinate - 1 WHERE user_id = $user";
+            $y_coordinate --;
         break;
     }
+
+    $sql_position = "SELECT * FROM tbl_positions WHERE x_coordinate = $x_coordinate && y_coordinate = $y_coordinate";
+    $result_positon = $conn->query($sql_position);
+    $row_position = $result_positon->fetch_assoc();
+
+    $position_id = $row_position['position_id'];
+
+    $sql_update = "UPDATE tbl_users SET position_id = $position_id WHERE user_id = $user";
 
     if ($conn->query($sql_update) === TRUE) {
         echo 'Posts changed successfully' . "<br>";
