@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 29 apr 2020 kl 20:49
+-- Tid vid skapande: 01 maj 2020 kl 00:33
 -- Serverversion: 10.4.11-MariaDB
 -- PHP-version: 7.4.2
 
@@ -46,6 +46,19 @@ CREATE TABLE `tbl_characters` (
 
 INSERT INTO `tbl_characters` (`character_id`, `name`, `img_type`, `position_id`, `line_0`, `line_1`, `line_2`) VALUES
 (1, 'Yoga', 'png', 85, 'Hej på dig din fule fan. Mitt namn är Yoga. Tyvärr har jag raderat dina minnen och du vet därför inte vem du är, men du kan få tillbaka dina minnen om du gör en gentjänst. Nu är det så att den onda överdimensionerade trögkryparen har stulit min värdighet. Ditt uppdrag är att föra tillbaka värdigheten till mig, den allsmäktige Yoga, moahahahaha.', 'Okej, bra', 'Tror du den ståtlige Yoga bryr sig? Gör det ändå.');
+
+-- --------------------------------------------------------
+
+--
+-- Tabellstruktur `tbl_items`
+--
+
+CREATE TABLE `tbl_items` (
+  `item_id` int(11) NOT NULL,
+  `item_name` text NOT NULL,
+  `cost` int(11) NOT NULL,
+  `img_type` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -257,7 +270,7 @@ CREATE TABLE `tbl_surroundings` (
 INSERT INTO `tbl_surroundings` (`surrounding_id`, `name`, `description`, `img_type`) VALUES
 (1, 'Gläntan', '', 'jpg'),
 (2, 'Kusliga skogen', '', 'jpg'),
-(3, 'Handlarstugan', 'Nämen se på fan. Är det inte en stuga jag skådar?', 'jpg');
+(3, 'Stugan', 'Nämen se på fan. Är det inte en stuga jag skådar?', 'jpg');
 
 -- --------------------------------------------------------
 
@@ -269,16 +282,16 @@ CREATE TABLE `tbl_users` (
   `user_id` int(11) NOT NULL,
   `username` text NOT NULL,
   `password` text NOT NULL,
-  `position_id` int(11) NOT NULL
+  `position_id` int(11) NOT NULL,
+  `gold` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumpning av Data i tabell `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `position_id`) VALUES
-(1, 'MatPersonalen', 'GillarMat123', 98),
-(2, 'MatPersonal', 'GillarMat123', 85);
+INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `position_id`, `gold`) VALUES
+(1, 'MatPersonalen', 'GillarMat123', 98, 0);
 
 -- --------------------------------------------------------
 
@@ -465,176 +478,7 @@ INSERT INTO `tbl_users_positions` (`user_id`, `position_id`, `visited`) VALUES
 (1, 166, 0),
 (1, 167, 0),
 (1, 168, 0),
-(1, 169, 0),
-(2, 1, 0),
-(2, 2, 0),
-(2, 3, 0),
-(2, 4, 0),
-(2, 5, 0),
-(2, 6, 0),
-(2, 7, 0),
-(2, 8, 0),
-(2, 9, 0),
-(2, 10, 0),
-(2, 11, 0),
-(2, 12, 0),
-(2, 13, 0),
-(2, 14, 0),
-(2, 15, 0),
-(2, 16, 0),
-(2, 17, 0),
-(2, 18, 0),
-(2, 19, 0),
-(2, 20, 0),
-(2, 21, 0),
-(2, 22, 0),
-(2, 23, 0),
-(2, 24, 0),
-(2, 25, 0),
-(2, 26, 0),
-(2, 27, 0),
-(2, 28, 0),
-(2, 29, 0),
-(2, 30, 0),
-(2, 31, 0),
-(2, 32, 0),
-(2, 33, 0),
-(2, 34, 0),
-(2, 35, 0),
-(2, 36, 0),
-(2, 37, 0),
-(2, 38, 0),
-(2, 39, 0),
-(2, 40, 0),
-(2, 41, 0),
-(2, 42, 0),
-(2, 43, 0),
-(2, 44, 0),
-(2, 45, 0),
-(2, 46, 0),
-(2, 47, 0),
-(2, 48, 0),
-(2, 49, 0),
-(2, 50, 0),
-(2, 51, 0),
-(2, 52, 0),
-(2, 53, 0),
-(2, 54, 0),
-(2, 55, 0),
-(2, 56, 0),
-(2, 57, 0),
-(2, 58, 0),
-(2, 59, 0),
-(2, 60, 0),
-(2, 61, 0),
-(2, 62, 0),
-(2, 63, 0),
-(2, 64, 0),
-(2, 65, 0),
-(2, 66, 0),
-(2, 67, 0),
-(2, 68, 0),
-(2, 69, 0),
-(2, 70, 0),
-(2, 71, 0),
-(2, 72, 0),
-(2, 73, 0),
-(2, 74, 0),
-(2, 75, 0),
-(2, 76, 0),
-(2, 77, 0),
-(2, 78, 0),
-(2, 79, 0),
-(2, 80, 0),
-(2, 81, 0),
-(2, 82, 0),
-(2, 83, 0),
-(2, 84, 0),
-(2, 85, 1),
-(2, 86, 0),
-(2, 87, 0),
-(2, 88, 0),
-(2, 89, 0),
-(2, 90, 0),
-(2, 91, 0),
-(2, 92, 0),
-(2, 93, 0),
-(2, 94, 0),
-(2, 95, 0),
-(2, 96, 0),
-(2, 97, 0),
-(2, 98, 0),
-(2, 99, 0),
-(2, 100, 0),
-(2, 101, 0),
-(2, 102, 0),
-(2, 103, 0),
-(2, 104, 0),
-(2, 105, 0),
-(2, 106, 0),
-(2, 107, 0),
-(2, 108, 0),
-(2, 109, 0),
-(2, 110, 0),
-(2, 111, 0),
-(2, 112, 0),
-(2, 113, 0),
-(2, 114, 0),
-(2, 115, 0),
-(2, 116, 0),
-(2, 117, 0),
-(2, 118, 0),
-(2, 119, 0),
-(2, 120, 0),
-(2, 121, 0),
-(2, 122, 0),
-(2, 123, 0),
-(2, 124, 0),
-(2, 125, 0),
-(2, 126, 0),
-(2, 127, 0),
-(2, 128, 0),
-(2, 129, 0),
-(2, 130, 0),
-(2, 131, 0),
-(2, 132, 0),
-(2, 133, 0),
-(2, 134, 0),
-(2, 135, 0),
-(2, 136, 0),
-(2, 137, 0),
-(2, 138, 0),
-(2, 139, 0),
-(2, 140, 0),
-(2, 141, 0),
-(2, 142, 0),
-(2, 143, 0),
-(2, 144, 0),
-(2, 145, 0),
-(2, 146, 0),
-(2, 147, 0),
-(2, 148, 0),
-(2, 149, 0),
-(2, 150, 0),
-(2, 151, 0),
-(2, 152, 0),
-(2, 153, 0),
-(2, 154, 0),
-(2, 155, 0),
-(2, 156, 0),
-(2, 157, 0),
-(2, 158, 0),
-(2, 159, 0),
-(2, 160, 0),
-(2, 161, 0),
-(2, 162, 0),
-(2, 163, 0),
-(2, 164, 0),
-(2, 165, 0),
-(2, 166, 0),
-(2, 167, 0),
-(2, 168, 0),
-(2, 169, 0);
+(1, 169, 0);
 
 --
 -- Index för dumpade tabeller
@@ -645,6 +489,12 @@ INSERT INTO `tbl_users_positions` (`user_id`, `position_id`, `visited`) VALUES
 --
 ALTER TABLE `tbl_characters`
   ADD PRIMARY KEY (`character_id`);
+
+--
+-- Index för tabell `tbl_items`
+--
+ALTER TABLE `tbl_items`
+  ADD PRIMARY KEY (`item_id`);
 
 --
 -- Index för tabell `tbl_positions`
@@ -675,6 +525,12 @@ ALTER TABLE `tbl_characters`
   MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT för tabell `tbl_items`
+--
+ALTER TABLE `tbl_items`
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT för tabell `tbl_positions`
 --
 ALTER TABLE `tbl_positions`
@@ -690,7 +546,7 @@ ALTER TABLE `tbl_surroundings`
 -- AUTO_INCREMENT för tabell `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
