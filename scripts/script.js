@@ -8,8 +8,15 @@ function ajaxNewXhttp() {
     }
 }
 
-function viewMainImage(surroundingId, imgType) {
-    url = "../images/surroundings/" + surroundingId + "." + imgType;
+function viewMainImage(surroundingId, imgType, special) {
+    let url;
+    console.log(special);
+    if (special == '') {
+        url = "../images/surroundings/" + surroundingId + "." + imgType;
+    }
+    else if (special == 'shop') {
+        url = "../images/shelves.svg";
+    }
     document.getElementById("image-container").style.backgroundImage = `url(${url})`;
 }
 

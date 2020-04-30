@@ -1,6 +1,13 @@
 <?php
     $user = $_COOKIE['user_id'];
 
+    if (array_key_exists('special', $_GET)) {
+        $special = $_GET['special'];
+    }
+    else {
+        $special = null;
+    }
+
     $servername = 'localhost';
     $username = 'the_game_user';
     $password = 'the_game_password';
@@ -33,9 +40,16 @@
     $result_character = $conn->query($sql_character);
     $row_character = $result_character->fetch_assoc();
 
-    $header = $row_user['name'];
-    $description = $row_user['description'];
-    $main_img_type = $row_user['img_type'];
+    if ($special == null) {
+        $header = $row_user['name'];
+        $description = $row_user['description'];
+        $main_img_type = $row_user['img_type'];
+    }
+    else if ($special == 'shop') {
+        $header = 'Shoppinghålan';
+        $description = 'Här verkar det som man kan shoppa loss!';
+        $main_img_type = null;
+    }
 
     $choice1 = $row_user['choice_1'];
     $choice2 = $row_user['choice_2'];
@@ -63,8 +77,12 @@
     <div id="container">
         <p class="rub"><?php echo $header?></p>
         <div id="image-container">
-            <img id="character-img" src="../images/characters/<?php echo $character_id . '.' . $character_img_type?>">
-            <div id="chat-box"></div>
+        <?php
+            if (isset($character_id)) {
+                echo "<img id='character-img' src='../images/characters/$character_id.$character_img_type'>";
+            }
+        ?>
+            <div id="chat-box" style="visibility: hidden"></div>
         </div>
         <div id="button-container">
             <div id="choice1" class="button choice" onclick="buttonClicked(1)">
@@ -95,35 +113,49 @@
     <script src="../scripts/script.js"></script>
     <script>
         function buttonClicked(choice) {
-            showLine(choice);
-            setVisited(<?php echo $position_id ?>);
+            if (<?php echo $position_id?> !== 98) {
+                showLine(choice);
+                setVisited(<?php echo $position_id ?>);
+            }
+            else {
+                if (choice == 1) {
+                    window.location.href = "main.php?special=shop";
+                }
+                else {
+
+                }
+            }
         }
 
         function showLine(line) {
             viewChatBox();
             switch (line) {
                 case 0:
-                    document.getElementById("chat-box").innerHTML = "<?php echo $lines[0]?>";
+                    document.getElementById("chat-box").innerHTML = "<?php if (isset($lines)) {echo $lines[0];} ?>";
                     break;
                 case 1:
-                    document.getElementById("chat-box").innerHTML = "<?php echo $lines[1]?>";
+                    document.getElementById("chat-box").innerHTML = "<?php if (isset($lines)) {echo $lines[1];} ?>";
                     break;
                 case 2:
-                    document.getElementById("chat-box").innerHTML = "<?php echo $lines[2]?>";
+                    document.getElementById("chat-box").innerHTML = "<?php if (isset($lines)) {echo $lines[2];} ?>";
                     break;
             }
         }
+
+    <?php
+        echo "viewMainImage($surrounding_id, '$main_img_type', '$special');";
+
+        if ($visited == 0 && isset($lines) && $special == null) {
+            echo "
+                document.getElementById('chat-box').style.visibility = 'visible';
+                showLine(0);
+            ";
+        }
+
+        if($special == 'shop') {
+            echo "document.getElementById('navigation').style.visibility = 'hidden';";
+        }
+    ?>
     </script>
 </body>
 </html>
-
-<?php
-    echo "<script>viewMainImage($surrounding_id, '$main_img_type');</script>";
-
-    if ($visited == 0) {
-        echo "<script>
-            document.getElementById('chat-box').style.visibility = 'visible';
-            showLine(0);
-            </script>";
-    }
-?>
