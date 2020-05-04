@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 01 maj 2020 kl 00:33
+-- Tid vid skapande: 04 maj 2020 kl 17:24
 -- Serverversion: 10.4.11-MariaDB
 -- PHP-version: 7.4.2
 
@@ -292,6 +292,18 @@ CREATE TABLE `tbl_users` (
 
 INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `position_id`, `gold`) VALUES
 (1, 'MatPersonalen', 'GillarMat123', 98, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Tabellstruktur `tbl_users_items`
+--
+
+CREATE TABLE `tbl_users_items` (
+  `user_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `status` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
