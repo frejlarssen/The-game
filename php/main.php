@@ -44,15 +44,18 @@
         $header = $row_user['name'];
         $description = $row_user['description'];
         $main_img_type = $row_user['img_type'];
+
+        $choice1 = $row_user['choice_1'];
+        $choice2 = $row_user['choice_2'];
     }
     else if ($special == 'shop') {
         $header = 'Shoppinghålan';
         $description = 'Här verkar det som man kan shoppa loss!';
         $main_img_type = null;
-    }
 
-    $choice1 = $row_user['choice_1'];
-    $choice2 = $row_user['choice_2'];
+        $choice1 = 'Utträd ur stugan';
+        $choice2 = null;
+    }
 
     if ($row_character != null) {
         $character_id = $row_character['character_id'];
@@ -88,9 +91,16 @@
             <div id="choice1" class="button choice" onclick="buttonClicked(1)">
                 <?php echo $choice1?>
             </div>
-            <div id="choice2" class="button choice" onclick="buttonClicked(2)">
-                <?php echo $choice2?>
+        <?php
+            if ($choice2 != null) {
+                echo '
+            <div id="choice2" class="button choice" onclick="buttonClicked(2)">' . 
+                $choice2 . '
             </div>
+                ';
+            }
+        ?>
+            
         </div>
         <p class="description"><?php echo $description?></p>
     </div>
@@ -113,13 +123,27 @@
     <script src="../scripts/script.js"></script>
     <script>
         function buttonClicked(choice) {
-            if (<?php echo $position_id?> !== 98) {
-                showLine(choice);
-                setVisited(<?php echo $position_id ?>);
+            console.log('in func');
+            if ('<?php echo $special ?>' == '') {
+                console.log('in first if');
+                if (<?php echo $position_id?> != 98) {
+                    showLine(choice);
+                    setVisited(<?php echo $position_id ?>);
+                }
+                else {
+                    console.log('in else');
+                    if (choice == 1) {
+                        console.log('In if');
+                        window.location.href = "main.php?special=shop";
+                    }
+                    else {
+
+                    }
+                }
             }
-            else {
+            else if ('<?php echo $special ?>' == 'shop') {
                 if (choice == 1) {
-                    window.location.href = "main.php?special=shop";
+                    window.location.href = "main.php";
                 }
                 else {
 
