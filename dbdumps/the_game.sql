@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 04 maj 2020 kl 17:24
+-- Tid vid skapande: 04 maj 2020 kl 17:42
 -- Serverversion: 10.4.11-MariaDB
 -- PHP-version: 7.4.2
 
@@ -59,6 +59,13 @@ CREATE TABLE `tbl_items` (
   `cost` int(11) NOT NULL,
   `img_type` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumpning av Data i tabell `tbl_items`
+--
+
+INSERT INTO `tbl_items` (`item_id`, `item_name`, `cost`, `img_type`) VALUES
+(1, 'Kaka', 20, 'jpg');
 
 -- --------------------------------------------------------
 
@@ -291,7 +298,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `position_id`, `gold`) VALUES
-(1, 'MatPersonalen', 'GillarMat123', 98, 0);
+(1, 'MatPersonalen', 'GillarMat123', 85, 0);
 
 -- --------------------------------------------------------
 
@@ -304,6 +311,13 @@ CREATE TABLE `tbl_users_items` (
   `item_id` int(11) NOT NULL,
   `status` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumpning av Data i tabell `tbl_users_items`
+--
+
+INSERT INTO `tbl_users_items` (`user_id`, `item_id`, `status`) VALUES
+(1, 1, 'not bought');
 
 -- --------------------------------------------------------
 
@@ -406,7 +420,7 @@ INSERT INTO `tbl_users_positions` (`user_id`, `position_id`, `visited`) VALUES
 (1, 82, 0),
 (1, 83, 0),
 (1, 84, 0),
-(1, 85, 1),
+(1, 85, 0),
 (1, 86, 0),
 (1, 87, 0),
 (1, 88, 0),
@@ -540,7 +554,7 @@ ALTER TABLE `tbl_characters`
 -- AUTO_INCREMENT för tabell `tbl_items`
 --
 ALTER TABLE `tbl_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT för tabell `tbl_positions`

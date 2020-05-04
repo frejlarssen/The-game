@@ -50,9 +50,7 @@
         }
 
         $sql_user = "SELECT * FROM tbl_users WHERE username = '$username'";
-
         $result_user = $conn->query($sql_user);
-
         $row_user = $result_user->fetch_assoc();
 
         $user_id = $row_user['user_id'];
@@ -65,6 +63,22 @@
             }
             else {
                 echo "Problem inserting tbl_users_positions: " . $conn->error . "<br>";
+            }
+        }
+
+        $sql_items = "SELECT * FROM tbl_items";
+        $result_items = $conn->query($sql_items);
+
+        while ($row_items = $result_items->fetch_assoc()) {
+            $item_id = $row_items['item_id'];
+
+            $sql_users_items = "INSERT INTO tbl_users_items (user_id, item_id, status) VALUES ($user_id, $item_id, 'not bought')";
+
+            if ($conn->query($sql_users_items)) {
+                echo "tbl_users_items inserted successfully";
+            }
+            else {
+                echo "Problem inserting tbl_users_items: " . $conn->error . "<br>";
             }
         }
         return $user_id;
