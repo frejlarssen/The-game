@@ -51,5 +51,6 @@
         echo 'Error changing posts: ' . $conn->error . "<br>";
     }
 
-    header("LOCATION: http://localhost/the-game/php/main.php");
+    $url = 'http://' . $_SERVER['SERVER_NAME'] . substr_replace($_SERVER['PHP_SELF'], 'main.php', strpos($_SERVER['PHP_SELF'], 'move.php'));
+    header("LOCATION: $url");
 ?>

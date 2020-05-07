@@ -39,7 +39,8 @@
 </html>
 
 <?php
-    function register($username, $password, $conn) {
+
+    function register_user($username, $password, $conn) {
         $sql_insert = "INSERT INTO tbl_users (username, password, position_id) VALUES ('$username', '$password', 85)";
 
         if ($conn->query($sql_insert)) {
@@ -85,7 +86,8 @@
     }
 
     if (array_key_exists("user_id", $_COOKIE)) {
-        header("LOCATION: http://localhost/the-game/php/main.php");
+        $url = 'http://' . $_SERVER['SERVER_NAME'] . substr_replace($_SERVER['PHP_SELF'], 'php/main.php', strpos($_SERVER['PHP_SELF'], 'index.php'));
+        header("LOCATION: $url");
     }
     echo "<script>
     document.getElementById('wrong-password').style.visibility = 'hidden';
@@ -115,9 +117,11 @@
             }
             else {
                 $user_id = $row_user['user_id'];
+                $url = 'http://' . $_SERVER['SERVER_NAME'] . substr_replace($_SERVER['PHP_SELF'], 'php/main.php', strpos($_SERVER['PHP_SELF'], 'index.php'));
+
                 echo "<script>
                     document.cookie = 'user_id=$user_id';
-                    window.location.replace('http://localhost/the-game/php/main.php');
+                    window.location.replace('$url');
                     </script>";
             }
         }
@@ -131,11 +135,13 @@
 
                 if ($row_search === null) {
 
-                    $user_id = register($username, $password, $conn);
+                    $user_id = register_user($username, $password, $conn);
+
+                    $url = 'http://' . $_SERVER['SERVER_NAME'] . substr_replace($_SERVER['PHP_SELF'], 'php/main.php', strpos($_SERVER['PHP_SELF'], 'index.php'));
 
                     echo "<script>
                     document.cookie = 'user_id=$user_id';
-                    window.location.replace('http://localhost/the-game/php/main.php');
+                    window.location.replace('$url');
                     </script>";
                 }
                 else {
