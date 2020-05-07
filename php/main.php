@@ -4,7 +4,7 @@
             if ($row_item = $result_items->fetch_assoc()) {
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
-                echo $row_item['cost'] . ' riksdaler.';
+                echo '<br>' . $row_item['cost'] . ' riksdaler.';
             }
         echo '</div>';
     }
