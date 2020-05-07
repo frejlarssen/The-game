@@ -1,0 +1,15 @@
+#image-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.shelf{
+
+}
+.item{
+    float: left;
+    width: 100px;
+}
+.item-img{
+    width: 100px;
+}

@@ -1,4 +1,14 @@
 <?php
+    function showItem($result_items, $item_num) {
+        echo '<div id="item-' . $item_num . '" class="item">';
+            if ($row_item = $result_items->fetch_assoc()) {
+                echo $row_item['item_name'];
+                echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
+                echo $row_item['cost'] . ' riksdaler.';
+            }
+        echo '</div>';
+    }
+
     $user = $_COOKIE['user_id'];
 
     if (array_key_exists('special', $_GET)) {
@@ -55,6 +65,20 @@
 
         $choice1 = 'Utträd ur stugan';
         $choice2 = null;
+
+        $sql_items = "SELECT *
+                        FROM (tbl_users_items
+                            LEFT JOIN tbl_items
+                                ON tbl_users_items.item_id = tbl_items.item_id)
+                        WHERE user_id = $user && status = 'not bought'
+                    ;";
+
+        if ($result_items = $conn->query($sql_items)) {
+
+        }
+        else {
+            echo $conn->error;
+        }
     }
 
     if ($row_character != null) {
@@ -75,6 +99,13 @@
     <title>The Game</title>
     <link type="text/css" rel="stylesheet" href="../styles/style.css">
     <link type="text/css" rel="stylesheet" href="../styles/surroundings.css">
+    <?php
+        if ($special == 'shop') {
+            echo '
+    <link type="text/css" rel="stylesheet" href="../styles/shop.css">
+            ';
+        }
+    ?>
 </head>
 <body>
     <div id="container">
@@ -83,6 +114,23 @@
         <?php
             if (isset($character_id)) {
                 echo "<img id='character-img' src='../images/characters/$character_id.$character_img_type'>";
+            }
+            if ($special == 'shop' && $result_items->num_rows > 0) {
+                echo '<div id="shelf-1" class="shelf">';
+                    for($item = 0; $item < 5; $item++) {
+                        showItem($result_items, $item);
+                    }
+                echo '</div>';
+                echo '<div id="shelf-2" class="shelf">';
+                    for($item = 5; $item < 10; $item++) {
+                        showItem($result_items, $item);
+                    }
+                echo '</div>';
+                echo '<div id="shelf-3" class="shelf">';
+                    for($item = 10; $item < 15; $item++) {
+                        showItem($result_items, $item);
+                    }
+                echo '</div>';
             }
         ?>
             <div id="chat-box" style="visibility: hidden"></div>
@@ -123,17 +171,13 @@
     <script src="../scripts/script.js"></script>
     <script>
         function buttonClicked(choice) {
-            console.log('in func');
             if ('<?php echo $special ?>' == '') {
-                console.log('in first if');
                 if (<?php echo $position_id?> != 98) {
                     showLine(choice);
                     setVisited(<?php echo $position_id ?>);
                 }
                 else {
-                    console.log('in else');
                     if (choice == 1) {
-                        console.log('In if');
                         window.location.href = "main.php?special=shop";
                     }
                     else {
