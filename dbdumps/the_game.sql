@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Värd: 127.0.0.1
--- Tid vid skapande: 04 maj 2020 kl 17:42
+-- Tid vid skapande: 12 maj 2020 kl 22:18
 -- Serverversion: 10.4.11-MariaDB
 -- PHP-version: 7.4.2
 
@@ -65,7 +65,8 @@ CREATE TABLE `tbl_items` (
 --
 
 INSERT INTO `tbl_items` (`item_id`, `item_name`, `cost`, `img_type`) VALUES
-(1, 'Kaka', 20, 'jpg');
+(1, 'Kaka', 20, 'jpg'),
+(2, 'Svärd', 100, 'png');
 
 -- --------------------------------------------------------
 
@@ -289,6 +290,7 @@ CREATE TABLE `tbl_users` (
   `user_id` int(11) NOT NULL,
   `username` text NOT NULL,
   `password` text NOT NULL,
+  `hash_algorithm` text NOT NULL,
   `position_id` int(11) NOT NULL,
   `gold` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -297,8 +299,8 @@ CREATE TABLE `tbl_users` (
 -- Dumpning av Data i tabell `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `position_id`, `gold`) VALUES
-(1, 'MatPersonalen', 'GillarMat123', 85, 0);
+INSERT INTO `tbl_users` (`user_id`, `username`, `password`, `hash_algorithm`, `position_id`, `gold`) VALUES
+(1, 'MatPersonalen', '$6$rounds=5000$anexamplestringf$2s4CS8pvrfxMWtj6nSBcGiuCn.ekhZHNUquknzmHX03GN0NJJg9EpTtBtsJaO3evnn8qkiV2SycsnhIiy.cKA1', 'CRYPT_SHA512', 85, 0);
 
 -- --------------------------------------------------------
 
@@ -317,7 +319,8 @@ CREATE TABLE `tbl_users_items` (
 --
 
 INSERT INTO `tbl_users_items` (`user_id`, `item_id`, `status`) VALUES
-(1, 1, 'not bought');
+(1, 1, 'not bought'),
+(1, 2, 'not bought');
 
 -- --------------------------------------------------------
 
@@ -554,7 +557,7 @@ ALTER TABLE `tbl_characters`
 -- AUTO_INCREMENT för tabell `tbl_items`
 --
 ALTER TABLE `tbl_items`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT för tabell `tbl_positions`

@@ -40,8 +40,46 @@
 
 <?php
 
+    function generateHash($password) {
+        $hash = array(
+            'algorithm' => '',
+            'password' => '');
+
+        if (CRYPT_SHA512 == 1) {
+            $hash['algorithm'] = 'CRYPT_SHA512';
+            $hash['password'] = crypt($password, '$6$rounds=5000$anexamplestringforsalt$');
+        }
+        else if (CRYPT_SHA256 == 1) {
+            $hash['algorithm'] = 'CRYPT_SHA256';
+            $hash['password'] = crypt($password, '$5$rounds=5000$anexamplestringforsalt$');
+        }
+        else if (CRYPT_BLOWFISH == 1) {
+            $hash['algorithm'] = 'CRYPT_BLOWFISH';
+            $hash['password'] = crypt($password, '$2a$09$anexamplestringforsalt$');
+        }
+        else if (CRYPT_MD5 == 1) {
+            $hash['algorithm'] = 'CRYPT_MD5';
+            $hash['password'] = crypt($password, '$1$somethin$');
+        }
+        else if (CRYPT_EXT_DES == 1) {
+            $hash['algorithm'] = 'CRYPT_EXT_DES';
+            $hash['password'] = crypt($password, '_S4..some');
+        }
+        else if (CRYPT_STD_DES == 1) {
+            $hash['algorithm'] = 'CRYPT_STD_DES';
+            $hash['password'] = crypt($password, 'tw');
+        }
+
+        return $hash;
+    }
+
     function register_user($username, $password, $conn) {
-        $sql_insert = "INSERT INTO tbl_users (username, password, position_id) VALUES ('$username', '$password', 85)";
+        $hash = generateHash($password);
+
+        $encrypted_password = $hash['password'];
+        $algorithm = $hash['algorithm'];
+
+        $sql_insert = "INSERT INTO tbl_users (username, password, hash_algorithm, position_id) VALUES ('$username', '$encrypted_password', '$algorithm', 85)";
 
         if ($conn->query($sql_insert)) {
             echo "Database updated successfully<br>";
