@@ -69,6 +69,10 @@
             $hash['algorithm'] = 'CRYPT_STD_DES';
             $hash['password'] = crypt($password, 'tw');
         }
+        else {
+            $hash['algorithm'] = 'none';
+            $hash['password'] = $password;
+        }
 
         return $hash;
     }
