@@ -21,6 +21,7 @@
                 <input class="button" name="type" type="submit" value="Logga in">
             </form>
             <div id="wrong-password">Fel användarnamn eller lösenord</div>
+            <div id="algorithm-not-supported"></div>
         </div>
         <div class="form">
             <h2>Ny spelare</h2>
@@ -40,36 +41,61 @@
 
 <?php
 
-    function generateHash($password) {
+    $algorithms = array( //Sorterat efter vad som helst ska användas, algoritmen högst upp kommer att väljas om det går
+        'CRYPT_SHA512' => CRYPT_SHA512,
+        'CRYPT_SHA256' => CRYPT_SHA256,
+        'CRYPT_BLOWFISH' => CRYPT_BLOWFISH,
+        'CRYPT_MD5' => CRYPT_MD5,
+        'CRYPT_EXT_DES' => CRYPT_EXT_DES,
+        'CRYPT_STD_DES' => CRYPT_STD_DES
+    );
+
+    $salts = array(
+        'CRYPT_SHA512' => '$6$rounds=5000$anexamplestringforsalt$',
+        'CRYPT_SHA256' => '$5$rounds=5000$anexamplestringforsalt$',
+        'CRYPT_BLOWFISH' => '$2a$09$anexamplestringforsalt$',
+        'CRYPT_MD5' => '$1$somethin$',
+        'CRYPT_EXT_DES' => '_S4..some',
+        'CRYPT_STD_DES' => 'tw'
+    );
+
+    function generate_hash_login($algorithm, $password) {
+        global $algorithms, $salts;
+
+        if ($algorithm != 'none') {
+            if ($algorithms[$algorithm] == 1) {
+                $hash = crypt($password, $salts[$algorithm]);
+            }
+            else {
+                $hash = null; //returnerar null om algoritmen inte stöds
+            }
+        }
+        else if ($algorithm == 'none') {
+            $hash = $password;
+        }
+
+        return $hash;
+    }
+
+    function generate_hash_registration($password) {
+        global $algorithms, $salts;
+
         $hash = array(
             'algorithm' => '',
             'password' => '');
+        
+        $supported_algorithm_found = false;
 
-        if (CRYPT_SHA512 == 1) {
-            $hash['algorithm'] = 'CRYPT_SHA512';
-            $hash['password'] = crypt($password, '$6$rounds=5000$anexamplestringforsalt$');
+        foreach ($algorithms as $name => $algorithm) {
+
+            if ($algorithm == 1 && $supported_algorithm_found == false) {
+                echo 'in if<br>';
+                $supported_algorithm_found = true;
+                $hash['algorithm'] = $name;
+                $hash['password'] = crypt($password, $salts[$name]);
+            }
         }
-        else if (CRYPT_SHA256 == 1) {
-            $hash['algorithm'] = 'CRYPT_SHA256';
-            $hash['password'] = crypt($password, '$5$rounds=5000$anexamplestringforsalt$');
-        }
-        else if (CRYPT_BLOWFISH == 1) {
-            $hash['algorithm'] = 'CRYPT_BLOWFISH';
-            $hash['password'] = crypt($password, '$2a$09$anexamplestringforsalt$');
-        }
-        else if (CRYPT_MD5 == 1) {
-            $hash['algorithm'] = 'CRYPT_MD5';
-            $hash['password'] = crypt($password, '$1$somethin$');
-        }
-        else if (CRYPT_EXT_DES == 1) {
-            $hash['algorithm'] = 'CRYPT_EXT_DES';
-            $hash['password'] = crypt($password, '_S4..some');
-        }
-        else if (CRYPT_STD_DES == 1) {
-            $hash['algorithm'] = 'CRYPT_STD_DES';
-            $hash['password'] = crypt($password, 'tw');
-        }
-        else {
+        if ($supported_algorithm_found == false) {
             $hash['algorithm'] = 'none';
             $hash['password'] = $password;
         }
@@ -78,7 +104,7 @@
     }
 
     function register_user($username, $password, $conn) {
-        $hash = generateHash($password);
+        $hash = generate_hash_registration($password);
 
         $encrypted_password = $hash['password'];
         $algorithm = $hash['algorithm'];
@@ -127,13 +153,22 @@
         return $user_id;
     }
 
+    function show_wrong_pass() {
+        echo "  <script>
+                    document.getElementById('wrong-password').style.visibility = 'visible';
+                </script>
+            ";
+    }
+
     if (array_key_exists("user_id", $_COOKIE)) {
         $url = 'http://' . $_SERVER['SERVER_NAME'] . substr_replace($_SERVER['PHP_SELF'], 'php/main.php', strpos($_SERVER['PHP_SELF'], 'index.php'));
         header("LOCATION: $url");
     }
-    echo "<script>
-    document.getElementById('wrong-password').style.visibility = 'hidden';
-    </script>";
+    echo "  <script>
+                document.getElementById('wrong-password').style.visibility = 'hidden';
+                document.getElementById('algorithm-not-supported').style.visibility = 'hidden';
+            </script>
+        ";//TODO: Använd innerHTML istället för visible pga design
     if (array_key_exists("type", $_POST)) {
         $username = $_POST["username"];
         $password = $_POST["password"];
@@ -152,19 +187,31 @@
 
             $row_user = $result_user->fetch_assoc();
 
-            if ($row_user == null || $password !== $row_user["password"]) {
-                echo "<script>
-                document.getElementById('wrong-password').style.visibility = 'visible';
-                </script>";
+            if ($row_user == null) {
+                show_wrong_pass();
             }
             else {
-                $user_id = $row_user['user_id'];
-                $url = 'http://' . $_SERVER['SERVER_NAME'] . substr_replace($_SERVER['PHP_SELF'], 'php/main.php', strpos($_SERVER['PHP_SELF'], 'index.php'));
+                $hash = generate_hash_login($row_user['hash_algorithm'], $password);
 
-                echo "<script>
-                    document.cookie = 'user_id=$user_id';
-                    window.location.replace('$url');
-                    </script>";
+                if ($hash == null) {
+                    echo "  <script>
+                                document.getElementById('algorithm-not-supported').innerHTML = 'Tyvärr stöder inte ditt operativsystem den krypteringsalgoritm som användes när du skapade ditt konto. Vilken osis! Vänligen logga in från datorn du använde när du skapade kontot eller skapa ett nytt konto nedan:';
+                            </script>
+                        ";
+                }
+                if ($hash !== $row_user["password"]) {
+                    showWrongPass();
+                }
+                else {
+                    $user_id = $row_user['user_id'];
+                    $url = 'http://' . $_SERVER['SERVER_NAME'] . substr_replace($_SERVER['PHP_SELF'], 'php/main.php', strpos($_SERVER['PHP_SELF'], 'index.php'));
+
+                    echo "  <script>
+                                document.cookie = 'user_id=$user_id';
+                                window.location.replace('$url');
+                            </script>
+                        ";
+                }
             }
         }
         else if ($_POST["type"] === "Registrera") {
