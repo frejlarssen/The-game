@@ -56,7 +56,9 @@ function buyItem(itemId, itemNum) {
     let xhttp = ajaxNewXhttp();
     xhttp.onreadystatechange = function () {
         console.log(this.responseText);
-        document.getElementById("item-" + itemNum).style.visibility = 'hidden';
+        if (this.responseText == "can buy") {
+            document.getElementById("item-" + itemNum).style.visibility = 'hidden';
+        }
     }
     xhttp.open('POST', '../php/ajax/buy_item.php');
     xhttp.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");

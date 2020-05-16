@@ -33,11 +33,9 @@
         $gold -= $cost;
         $sql_update_users_items = "UPDATE tbl_users_items SET status = 'bought' WHERE user_id = $user && item_id = $item_id";
         $sql_update_users = "UPDATE tbl_users SET gold = $gold WHERE user_id = $user";
-
+        echo 'can buy';
         if ($conn->query($sql_update_users_items)) {
-            echo 'users_items updated successfully ';
             if ($conn->query($sql_update_users)) {
-                echo 'users updated successfully ';
             }
             else {
                 echo 'failed to update users: ' . $conn->error;
