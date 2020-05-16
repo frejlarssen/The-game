@@ -42,6 +42,10 @@ function logout() {
     window.location.href = "../";
 }
 
+function deleteAccount() {
+    window.location.href = "./delete_account.php";
+}
+
 function move(direction) {
     window.location.href = "move.php/?direction=" + direction;
 }

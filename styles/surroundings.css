@@ -37,6 +37,7 @@
 }
 .button{
     width: 100px;
+    border: 2px solid black;
     padding: 10px;
     background-color: green;
     text-align: center;
@@ -56,6 +57,11 @@
     position: fixed;
     top: 0;
     right: 0;
+}
+#delete-account{
+    position: fixed;
+    top: 0;
+    right: 125px;
 }
 #navigation{
     position: absolute;

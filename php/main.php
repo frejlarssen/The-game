@@ -155,6 +155,9 @@
     <div id="logout" class="button" onclick="logout()">
         Logga ut
     </div>
+    <div id="delete-account" class="button" onclick="deleteAccount()">
+        Radera kontot
+    </div>
     <div id="navigation">
         <div class="row">
             <div id="north" class="direction" onclick="move('north')"></div>
