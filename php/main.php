@@ -135,6 +135,7 @@
         ?>
             <div id="chat-box" style="visibility: hidden"></div>
         </div>
+        <p class="description"><?php echo $description?></p>
         <div id="button-container">
             <div id="choice1" class="button choice" onclick="buttonClicked(1)">
                 <?php echo $choice1?>
@@ -148,9 +149,7 @@
                 ';
             }
         ?>
-            
         </div>
-        <p class="description"><?php echo $description?></p>
     </div>
     <div id="logout" class="button" onclick="logout()">
         Logga ut
