@@ -1,12 +1,12 @@
 <?php
     function showItem($result_items, $item_num) {
-        echo '<div id="item-' . $item_num . '" class="item">';
-            if ($row_item = $result_items->fetch_assoc()) {
+        if ($row_item = $result_items->fetch_assoc()) {
+            echo '<div id="item-' . $item_num . '" class="item" onclick="buyItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';        
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
                 echo '<br>' . $row_item['cost'] . ' riksdaler.';
-            }
-        echo '</div>';
+            echo '</div>';
+        }
     }
 
     $user = $_COOKIE['user_id'];

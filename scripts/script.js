@@ -25,8 +25,8 @@ function viewChatBox() {
     document.getElementById("chat-box").style.backgroundImage = `url(${url})`;
 }
 
-function setVisited(position_id) {
-    let data = "position_id=" + position_id;
+function setVisited(positionId) {
+    let data = "position_id=" + positionId;
 
     let xhttp = ajaxNewXhttp();
     xhttp.onreadystatechange = function () {
@@ -48,4 +48,17 @@ function deleteAccount() {
 
 function move(direction) {
     window.location.href = "move.php/?direction=" + direction;
+}
+
+function buyItem(itemId, itemNum) {
+    let data = "item_id=" + itemId;
+
+    let xhttp = ajaxNewXhttp();
+    xhttp.onreadystatechange = function () {
+        console.log(this.responseText);
+        document.getElementById("item-" + itemNum).style.visibility = 'hidden';
+    }
+    xhttp.open('POST', '../php/ajax/buy_item.php');
+    xhttp.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");
+    xhttp.send(data);
 }
