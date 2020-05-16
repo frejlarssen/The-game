@@ -1,10 +1,19 @@
 <?php
-    function showItem($result_items, $item_num) {
+    function showItemShop($result_items, $item_num) {
         if ($row_item = $result_items->fetch_assoc()) {
             echo '<div id="item-' . $item_num . '" class="item" onclick="buyItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';        
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
                 echo '<br>' . $row_item['cost'] . ' riksdaler.';
+            echo '</div>';
+        }
+    }
+
+    function showItemInventory($result_items, $item_num) {
+        if ($row_item = $result_items->fetch_assoc()) {
+            echo '<div id="item-' . $item_num . '" class="item" onclick="useItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';        
+                echo $row_item['item_name'];
+                echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
             echo '</div>';
         }
     }
@@ -50,6 +59,20 @@
     $result_character = $conn->query($sql_character);
     $row_character = $result_character->fetch_assoc();
 
+    $sql_items_inventory = "SELECT *
+                        FROM (tbl_users_items
+                            LEFT JOIN tbl_items
+                                ON tbl_users_items.item_id = tbl_items.item_id)
+                        WHERE user_id = $user && status = 'bought'
+                    ;";
+    
+    if ($result_items_inventory = $conn->query($sql_items_inventory)) {
+
+    }
+    else {
+        echo $conn->error;
+    }
+
     if ($special == null) {
         $header = $row_user['name'];
         $description = $row_user['description'];
@@ -66,14 +89,14 @@
         $choice1 = 'Utträd ur stugan';
         $choice2 = null;
 
-        $sql_items = "SELECT *
+        $sql_items_shop = "SELECT *
                         FROM (tbl_users_items
                             LEFT JOIN tbl_items
                                 ON tbl_users_items.item_id = tbl_items.item_id)
                         WHERE user_id = $user && status = 'not bought'
                     ;";
 
-        if ($result_items = $conn->query($sql_items)) {
+        if ($result_items_shop = $conn->query($sql_items_shop)) {
 
         }
         else {
@@ -109,65 +132,77 @@
 </head>
 <body>
     <div id="container">
-        <p class="rub"><?php echo $header?></p>
-        <div id="image-container">
-        <?php
-            if (isset($character_id)) {
-                echo "<img id='character-img' src='../images/characters/$character_id.$character_img_type'>";
-            }
-            if ($special == 'shop' && $result_items->num_rows > 0) {
-                echo '<div id="shelf-1" class="shelf">';
-                    for($item = 0; $item < 5; $item++) {
-                        showItem($result_items, $item);
-                    }
-                echo '</div>';
-                echo '<div id="shelf-2" class="shelf">';
-                    for($item = 5; $item < 10; $item++) {
-                        showItem($result_items, $item);
-                    }
-                echo '</div>';
-                echo '<div id="shelf-3" class="shelf">';
-                    for($item = 10; $item < 15; $item++) {
-                        showItem($result_items, $item);
-                    }
-                echo '</div>';
-            }
-        ?>
-            <div id="chat-box" style="visibility: hidden"></div>
+        <div id="inventory">
+            <h2 id="inventory-header">Inventarium</h2>
+            <?php
+                for($item = 0; $item < $result_items_inventory->num_rows; $item++) {
+                    showItemInventory($result_items_inventory, $item);
+                }
+            ?>
         </div>
-        <p class="description"><?php echo $description?></p>
-        <div id="button-container">
-            <div id="choice1" class="button choice" onclick="buttonClicked(1)">
-                <?php echo $choice1?>
+        <div id="surrounding-container">
+            <p class="rub"><?php echo $header?></p>
+            <div id="image-container">
+            <?php
+                if (isset($character_id)) {
+                    echo "<img id='character-img' src='../images/characters/$character_id.$character_img_type'>";
+                }
+                if ($special == 'shop' && $result_items_shop->num_rows > 0) {
+                    echo '<div id="shelf-1" class="shelf">';
+                        for($item = 0; $item < 5; $item++) {
+                            showItemShop($result_items_shop, $item);
+                        }
+                    echo '</div>';
+                    echo '<div id="shelf-2" class="shelf">';
+                        for($item = 5; $item < 10; $item++) {
+                            showItemShop($result_items_shop, $item);
+                        }
+                    echo '</div>';
+                    echo '<div id="shelf-3" class="shelf">';
+                        for($item = 10; $item < 15; $item++) {
+                            showItemShop($result_items_shop, $item);
+                        }
+                    echo '</div>';
+                }
+            ?>
+                <div id="chat-box" style="visibility: hidden"></div>
             </div>
-        <?php
-            if ($choice2 != null) {
-                echo '
-            <div id="choice2" class="button choice" onclick="buttonClicked(2)">' . 
-                $choice2 . '
+            <p class="description"><?php echo $description?></p>
+            <div id="button-container">
+                <div id="choice1" class="button choice" onclick="buttonClicked(1)">
+                    <?php echo $choice1?>
+                </div>
+            <?php
+                if ($choice2 != null) {
+                    echo '
+                <div id="choice2" class="button choice" onclick="buttonClicked(2)">' . 
+                    $choice2 . '
+                </div>
+                    ';
+                }
+            ?>
             </div>
-                ';
-            }
-        ?>
         </div>
-    </div>
-    <div id="logout" class="button" onclick="logout()">
-        Logga ut
-    </div>
-    <div id="delete-account" class="button" onclick="deleteAccount()">
-        Radera kontot
-    </div>
-    <div id="navigation">
-        <div class="row">
-            <div id="north" class="direction" onclick="move('north')"></div>
-        </div>
-        <div class="row">
-            <div id="west" class="direction" onclick="move('west')"></div>
-            <div id="middle" class="direction"></div>
-            <div id="east" class="direction" onclick="move('east')"></div>
-        </div>
-        <div class="row">
-            <div id="south" class="direction" onclick="move('south')"></div>
+        <div id="navigation">
+            <div id="logout" class="button" onclick="logout()">
+                Logga ut
+            </div>
+            <div id="delete-account" class="button" onclick="deleteAccount()">
+                Radera kontot
+            </div>
+            <div id="compass">
+                <div class="row">
+                    <div id="north" class="direction" onclick="move('north')"></div>
+                </div>
+                <div class="row">
+                    <div id="west" class="direction" onclick="move('west')"></div>
+                    <div id="middle" class="direction"></div>
+                    <div id="east" class="direction" onclick="move('east')"></div>
+                </div>
+                <div class="row">
+                    <div id="south" class="direction" onclick="move('south')"></div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="../scripts/script.js"></script>

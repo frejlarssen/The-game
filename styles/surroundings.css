@@ -1,4 +1,29 @@
 #container{
+    /*display: flex;
+    flex-direction: row;
+    justify-content: center;
+    */
+}
+#inventory{
+    float: left;
+    width: 300px;
+    height: 600px;
+    background-color: green;
+    margin-top: 100px;
+    margin-left: 100px;
+    margin-right: 100px;
+    border: 2px solid black;
+}
+h2{
+    border-bottom: 2px solid black;
+}
+.item{
+    width: 100px;
+}
+.item-img{
+    height: 80px;
+}
+#surrounding-container{
     width: 50%;
     margin: auto;
 }
@@ -64,7 +89,7 @@
     top: 0;
     right: 125px;
 }
-#navigation{
+#compass{
     position: absolute;
     top: 300px;
     right: 0px;
