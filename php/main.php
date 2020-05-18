@@ -54,6 +54,7 @@
 
     $position_id = $row_user['position_id'];
     $surrounding_id = $row_user['surrounding_id'];
+    $gold = $row_user['gold'];
 
     $sql_character = "SELECT * FROM tbl_characters WHERE position_id = $position_id";
     $result_character = $conn->query($sql_character);
@@ -134,6 +135,7 @@
     <div id="container">
         <div id="inventory">
             <h2 id="inventory-header">Inventarium</h2>
+            <h3 id="gold">Riksdaler: <?php echo $gold?></h3>
             <?php
                 for($item = 0; $item < $result_items_inventory->num_rows; $item++) {
                     showItemInventory($result_items_inventory);

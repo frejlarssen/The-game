@@ -57,11 +57,11 @@ function buyItem(itemId) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(this.responseText);
-            console.log(response);
             if (response.status == "can buy") {
                 document.getElementById("item-shop-" + itemId).style.visibility = 'hidden';
                 let html = '<div id="item-inventory-' + itemId + '" class="item item-inventory" onclick="useItem(' + itemId + ')">' + response.item.name + '<img class="item-img" src="../images/items/' + itemId + '.' + response.item.img_type + '"></div>';
                 document.getElementById("inventory").innerHTML += html;
+                document.getElementById("gold").innerHTML = 'Riksdaler: ' + response.gold;
             }
         }
     }

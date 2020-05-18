@@ -39,6 +39,7 @@
                 $response->status = 'can buy';
                 $response->item->name = $row_item['item_name'];
                 $response->item->img_type = $row_item['img_type'];
+                $response->gold = $gold;
             }
             else {
                 $response->status = 'failed to update users: ' . $conn->error;
