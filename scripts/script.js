@@ -55,9 +55,14 @@ function buyItem(itemId, itemNum) {
 
     let xhttp = ajaxNewXhttp();
     xhttp.onreadystatechange = function () {
-        console.log(this.responseText);
-        if (this.responseText == "can buy") {
-            document.getElementById("item-" + itemNum).style.visibility = 'hidden';
+        if (this.readyState == 4 && this.status == 200) {
+            let response = JSON.parse(this.responseText);
+            console.log(response);
+            if (response.status == "can buy") {
+                document.getElementById("item-shop-" + itemNum).style.visibility = 'hidden';
+                let html = '<div id="item-inventory-' + itemNum + '" class="item item-inventory" onclick="useItem(' + itemId + ', ' + itemNum + ')">' + response.item.name + '<img class="item-img" src="../images/items/' + itemId + '.' + response.item.img_type + '"></div>';
+                document.getElementById("inventory").innerHTML += html;
+            }
         }
     }
     xhttp.open('POST', '../php/ajax/buy_item.php');

@@ -1,4 +1,5 @@
 <?php
+    error_reporting(E_ERROR | E_PARSE); //En varning som returneras härifrån ger problem när man ska omvandla responsen till ett objekt i JavaScript, därför har jag här stängt av varningar.
     $user = $_COOKIE['user_id'];
     $item_id = $_POST['item_id'];
 
@@ -33,19 +34,24 @@
         $gold -= $cost;
         $sql_update_users_items = "UPDATE tbl_users_items SET status = 'bought' WHERE user_id = $user && item_id = $item_id";
         $sql_update_users = "UPDATE tbl_users SET gold = $gold WHERE user_id = $user";
-        echo 'can buy';
         if ($conn->query($sql_update_users_items)) {
             if ($conn->query($sql_update_users)) {
+                $response->status = 'can buy';
+                $response->item->name = $row_item['item_name'];
+                $response->item->img_type = $row_item['img_type'];
             }
             else {
-                echo 'failed to update users: ' . $conn->error;
+                $response->status = 'failed to update users: ' . $conn->error;
             }
         }
         else {
-            echo 'failed to update users_items: ' . $conn->error;
+            $response->status = 'failed to update users_items: ' . $conn->error;
         }
     }
     else {
-        echo 'can not buy';
+        $response->status = 'can not afford';
     }
+
+    $json_response = json_encode($response);
+    echo $json_response;
 ?>

@@ -1,7 +1,7 @@
 <?php
     function showItemShop($result_items, $item_num) {
         if ($row_item = $result_items->fetch_assoc()) {
-            echo '<div id="item-' . $item_num . '" class="item item-shop" onclick="buyItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';        
+            echo '<div id="item-shop-' . $item_num . '" class="item item-shop" onclick="buyItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
                 echo '<br>' . $row_item['cost'] . ' riksdaler.';
@@ -11,7 +11,7 @@
 
     function showItemInventory($result_items, $item_num) {
         if ($row_item = $result_items->fetch_assoc()) {
-            echo '<div id="item-' . $item_num . '" class="item item-inventory" onclick="useItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';        
+            echo '<div id="item-inventory-' . $item_num . '" class="item item-inventory" onclick="useItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
             echo '</div>';
