@@ -69,3 +69,24 @@ function buyItem(itemId) {
     xhttp.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");
     xhttp.send(data);
 }
+
+function useItem(itemId, require, reward, rewardType) {
+    if (itemId == require) {
+        console.log("reward: ", reward);
+        console.log("reward_type: ", rewardType);
+        let data = "item_id=" + itemId + "&reward=" + reward + "&reward_type=" + rewardType;
+
+        let xhttp = ajaxNewXhttp();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                console.log(this.responseText);
+                let response = JSON.parse(this.responseText);
+                console.log(response);
+                //TODO: Gör så att använd item försvinner på dirren
+            }
+        }
+        xhttp.open('POST', '../php/ajax/use_item.php');
+        xhttp.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");
+        xhttp.send(data);
+    }
+}

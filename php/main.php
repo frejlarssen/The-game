@@ -10,8 +10,9 @@
     }
 
     function showItemInventory($result_items) {
+        global $character_require, $character_reward, $reward_type;
         if ($row_item = $result_items->fetch_assoc()) {
-            echo '<div id="item-inventory-' . $row_item['item_id'] . '" class="item item-inventory" onclick="useItem(' . $row_item['item_id'] . ')">';
+            echo '<div id="item-inventory-' . $row_item['item_id'] . '" class="item item-inventory" onclick="useItem(' . $row_item['item_id'] . ', ' . $character_require . ', ' . $character_reward . ", '" . $reward_type . "')" . '">;';
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
             echo '</div>';
@@ -59,6 +60,22 @@
     $sql_character = "SELECT * FROM tbl_characters WHERE position_id = $position_id";
     $result_character = $conn->query($sql_character);
     $row_character = $result_character->fetch_assoc();
+
+    if ($result_character->num_rows > 0) {
+        $character_require = $row_character['require_item'];
+        if ($row_character['reward_gold']) {
+            $character_reward = $row_character['reward_gold'];
+            $reward_type = 'gold';
+        }
+        else if ($row_character['reward_item']) {
+            $character_reward = $row_character['reward_item'];
+            $reward_type = 'item';
+        }
+        else if ($row_character['reward_line']) {
+            $character_reward = $row_character['reward_line'];
+            $reward_type = 'line';
+        }
+    }
 
     $sql_items_inventory = "SELECT *
                         FROM (tbl_users_items
