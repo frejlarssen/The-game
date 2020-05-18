@@ -1,7 +1,7 @@
 <?php
-    function showItemShop($result_items, $item_num) {
+    function showItemShop($result_items) {
         if ($row_item = $result_items->fetch_assoc()) {
-            echo '<div id="item-shop-' . $item_num . '" class="item item-shop" onclick="buyItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';
+            echo '<div id="item-shop-' . $row_item['item_id'] . '" class="item item-shop" onclick="buyItem(' . $row_item['item_id'] . ')">';
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
                 echo '<br>' . $row_item['cost'] . ' riksdaler.';
@@ -9,9 +9,9 @@
         }
     }
 
-    function showItemInventory($result_items, $item_num) {
+    function showItemInventory($result_items) {
         if ($row_item = $result_items->fetch_assoc()) {
-            echo '<div id="item-inventory-' . $item_num . '" class="item item-inventory" onclick="useItem(' . $row_item['item_id'] . ', ' . $item_num . ')">';
+            echo '<div id="item-inventory-' . $row_item['item_id'] . '" class="item item-inventory" onclick="useItem(' . $row_item['item_id'] . ')">';
                 echo $row_item['item_name'];
                 echo '<img class="item-img" src="../images/items/' . $row_item['item_id'] . '.' . $row_item['img_type'] . '">';
             echo '</div>';
@@ -136,7 +136,7 @@
             <h2 id="inventory-header">Inventarium</h2>
             <?php
                 for($item = 0; $item < $result_items_inventory->num_rows; $item++) {
-                    showItemInventory($result_items_inventory, $item);
+                    showItemInventory($result_items_inventory);
                 }
             ?>
         </div>
@@ -150,17 +150,17 @@
                 if ($special == 'shop' && $result_items_shop->num_rows > 0) {
                     echo '<div id="shelf-1" class="shelf">';
                         for($item = 0; $item < 5; $item++) {
-                            showItemShop($result_items_shop, $item);
+                            showItemShop($result_items_shop);
                         }
                     echo '</div>';
                     echo '<div id="shelf-2" class="shelf">';
                         for($item = 5; $item < 10; $item++) {
-                            showItemShop($result_items_shop, $item);
+                            showItemShop($result_items_shop);
                         }
                     echo '</div>';
                     echo '<div id="shelf-3" class="shelf">';
                         for($item = 10; $item < 15; $item++) {
-                            showItemShop($result_items_shop, $item);
+                            showItemShop($result_items_shop);
                         }
                     echo '</div>';
                 }
