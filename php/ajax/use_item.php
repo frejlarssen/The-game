@@ -21,6 +21,7 @@
                 $sql_update_user = "UPDATE tbl_users SET gold = (gold + $reward) WHERE user_id = $user";
                 if ($conn->query($sql_update_user)) {
                     $response->status = 'Money earned';
+                    $response->earned = $reward;
                 }
                 else {
                 }

@@ -11,7 +11,7 @@ function ajaxNewXhttp() {
 function viewMainImage(surroundingId, imgType, special) {
     let url;
     console.log(special);
-    if (special == '') {
+    if (special == '') { //Kollar om det är en normal sida
         url = "../images/surroundings/" + surroundingId + "." + imgType;
     }
     else if (special == 'shop') {
@@ -58,7 +58,7 @@ function buyItem(itemId) {
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(this.responseText);
             if (response.status == "can buy") {
-                document.getElementById("item-shop-" + itemId).style.visibility = 'hidden';
+                document.getElementById("item-shop-" + itemId).style.visibility = "hidden";
                 let html = '<div id="item-inventory-' + itemId + '" class="item item-inventory" onclick="useItem(' + itemId + ')">' + response.item.name + '<img class="item-img" src="../images/items/' + itemId + '.' + response.item.img_type + '"></div>';
                 document.getElementById("inventory").innerHTML += html;
                 document.getElementById("gold").innerHTML = 'Riksdaler: ' + response.gold;
@@ -82,7 +82,7 @@ function useItem(itemId, require, reward, rewardType) {
                 console.log(this.responseText);
                 let response = JSON.parse(this.responseText);
                 console.log(response);
-                //TODO: Gör så att använd item försvinner på dirren
+                document.getElementById("item-inventory-" + itemId).style.visibility = "hidden";
             }
         }
         xhttp.open('POST', '../php/ajax/use_item.php');

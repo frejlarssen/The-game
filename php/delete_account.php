@@ -38,6 +38,6 @@
 </head>
 <body>
     <script src="../scripts/script.js"></script>
-    <script>logout()</script>
+    <script>logout()</script> <!-- Tar bort kakan och omdirigerar till index.php -->
 </body>
 </html>

@@ -30,7 +30,7 @@
     $cost = $row_item['cost'];
     $gold = $row_user['gold'];
 
-    if ($gold >= $cost) {
+    if ($gold >= $cost) { //Kollar om spelaren har råd
         $gold -= $cost;
         $sql_update_users_items = "UPDATE tbl_users_items SET status = 'bought' WHERE user_id = $user && item_id = $item_id";
         $sql_update_users = "UPDATE tbl_users SET gold = $gold WHERE user_id = $user";

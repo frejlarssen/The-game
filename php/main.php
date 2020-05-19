@@ -21,7 +21,7 @@
 
     $user = $_COOKIE['user_id'];
 
-    if (array_key_exists('special', $_GET)) {
+    if (array_key_exists('special', $_GET)) { //Kollar om det är något speciellt med sidan (till exempel att det är butiken)
         $special = $_GET['special'];
     }
     else {
@@ -44,7 +44,7 @@
                         LEFT JOIN tbl_users_positions
                             ON tbl_users.position_id = tbl_users_positions.position_id && tbl_users.user_id = tbl_users_positions.user_id)
                     WHERE tbl_users.`user_id` = $user
-                ;";
+                ;";//Hämtar information om användaren, dess position, omgivningen och om den har varit där förr
 
     if ($result_user = $conn->query($sql_user)) {
         $row_user = $result_user->fetch_assoc();
@@ -63,7 +63,7 @@
 
     if ($result_character->num_rows > 0) {
         $character_require = $row_character['require_item'];
-        if ($row_character['reward_gold']) {
+        if ($row_character['reward_gold']) { //Kollar vilken reward som det finns något i och sätter reward_type och character_reward utifrån det
             $character_reward = $row_character['reward_gold'];
             $reward_type = 'gold';
         }
@@ -141,7 +141,7 @@
     <link type="text/css" rel="stylesheet" href="../styles/style.css">
     <link type="text/css" rel="stylesheet" href="../styles/surroundings.css">
     <?php
-        if ($special == 'shop') {
+        if ($special == 'shop') { //Länkar till shop.css om spelaren är i butiken
             echo '
     <link type="text/css" rel="stylesheet" href="../styles/shop.css">
             ';
@@ -167,7 +167,7 @@
                     echo "<img id='character-img' src='../images/characters/$character_id.$character_img_type'>";
                 }
                 if ($special == 'shop' && $result_items_shop->num_rows > 0) {
-                    echo '<div id="shelf-1" class="shelf">';
+                    echo '<div id="shelf-1" class="shelf">'; //Skriver ut de 5 första föremålen på första hyllan och så vidare
                         for($item = 0; $item < 5; $item++) {
                             showItemShop($result_items_shop);
                         }
@@ -192,7 +192,7 @@
                     <?php echo $choice1?>
                 </div>
             <?php
-                if ($choice2 != null) {
+                if ($choice2 != null) { //Kollan om det finns en andra knapp
                     echo '
                 <div id="choice2" class="button choice" onclick="buttonClicked(2)">' . 
                     $choice2 . '
@@ -227,7 +227,7 @@
     <script src="../scripts/script.js"></script>
     <script>
         function buttonClicked(choice) {
-            if ('<?php echo $special ?>' == '') {
+            if ('<?php echo $special ?>' == '') { //PHP skriver vad JavaScript ska jämföra med ''
                 if (<?php echo $position_id?> != 98) {
                     showLine(choice);
                     setVisited(<?php echo $position_id ?>);

@@ -88,8 +88,7 @@
 
         foreach ($algorithms as $name => $algorithm) {
 
-            if ($algorithm == 1 && $supported_algorithm_found == false) {
-                echo 'in if<br>';
+            if ($algorithm == 1 && $supported_algorithm_found == false) { //Kollar om algoritmen stöds och om den tidigare hittat en algoritm som stöds
                 $supported_algorithm_found = true;
                 $hash['algorithm'] = $name;
                 $hash['password'] = crypt($password, $salts[$name]);
@@ -222,7 +221,7 @@
                 $result_search = $conn->query($sql_search);
                 $row_search = $result_search -> fetch_assoc();
 
-                if ($row_search === null) {
+                if ($row_search === null) { //Kollar om det finns någon med det användarnamnet
 
                     $user_id = register_user($username, $password, $conn);
 
