@@ -38,7 +38,8 @@ function setVisited(positionId) {
 }
 
 function logout() {
-    document.cookie = "user_id=; expires=Thu, 18 Dec 2013 12:00:00; path=/the-game";
+    pathParts = window.location.pathname.split("/");
+    document.cookie = "user_id=; expires=Thu, 18 Dec 2013 12:00:00; path=/" + pathParts[1];
     window.location.href = "../";
 }
 
