@@ -199,7 +199,7 @@
                         ";
                 }
                 if ($hash !== $row_user["password"]) {
-                    showWrongPass();
+                    show_wrong_pass();
                 }
                 else {
                     $user_id = $row_user['user_id'];

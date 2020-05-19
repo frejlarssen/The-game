@@ -39,7 +39,7 @@ function setVisited(positionId) {
 
 function logout() {
     pathParts = window.location.pathname.split("/");
-    document.cookie = "user_id=; expires=Thu, 18 Dec 2013 12:00:00; path=/" + pathParts[1];
+    document.cookie = "user_id=; expires=Thu, 18 Dec 2013 12:00:00; path=/" + pathParts[1]; //Relativ sökväg för att det ska fungera oavsett vad huvudmappen heter
     window.location.href = "../";
 }
 
